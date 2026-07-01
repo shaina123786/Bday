@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever Yours 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{overflow-y:auto;overflow-x:hidden;min-height:100%;}
+
+body{
+  min-height:100vh;width:100%;
+  display:flex;flex-direction:column;align-items:center;
+  background:#14001a; /* Pehle se thoda behtar deep wine tone */
+  font-family:'Dancing Script',cursive;
+  position:relative;
+  padding-bottom:50px;
+}
+
+/* ═══ BG (Colors Made More Vibrant & Romantic) ═══ */
+.bg{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(235, 0, 160, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(255, 70, 150, 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(110, 0, 200, 0.3) 0%, transparent 60%),
+    linear-gradient(155deg,#12001e 0%,#2d0044 40%,#5a004b 70%,#88004b 100%);
+  animation:bgP 12s ease-in-out infinite alternate;
+}
+@keyframes bgP{
+  from{filter:brightness(.9) hue-rotate(0deg);}
+  to   {filter:brightness(1.1) hue-rotate(10deg);}
+}
+canvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+
+/* ═══ AUTOPLAY OVERLAY (Vibrant Purple-Wine Background) ═══ */
+.audio-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #12001e 0%, #3a002c 100%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+.audio-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* UNIQUE & NEW BUTTON STYLE (Neon Rose-Pink Glow) */
+.open-btn {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #fff;
+  background: linear-gradient(45deg, #ff1493, #ff4500); /* Neon Pink & Warm Rose Blend */
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 15px 45px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.3);
+  animation: pulse 2s infinite;
+  transition: all 0.4s ease;
+  letter-spacing: 1px;
+}
+.open-btn:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 0 45px rgba(255, 20, 147, 1), 0 0 15px rgba(255, 255, 255, 0.6);
+  background: linear-gradient(45deg, #ff4500, #ff1493);
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 20, 147, 0.8); }
+  70% { box-shadow: 0 0 0 25px rgba(255, 20, 147, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 20, 147, 0); }
+}
+
+/* ═══ PAGE ═══ */
+.page{
+  position:relative;z-index:10;
+  width:100%;max-width:500px;
+  display:flex;flex-direction:column;align-items:center;
+  padding:22px 14px 40px;
+  gap:8px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.page.visible {
+  opacity: 1;
+}
+
+/* TOP TITLE */
+.top-title{
+  font-family:'Great Vibes',cursive;
+  font-size:1.8rem;color:#ffd6f0;
+  text-shadow:0 0 20px rgba(255,120,200,.85),0 0 45px rgba(255,60,180,.45);
+  text-align:center;min-height:1.3em;letter-spacing:1px;
+  margin-bottom:2px;
+}
+
+/* ═══ IMAGE CONTAINER ═══ */
+.heart-outer {
+  position: relative;
+  width: min(90vw, 420px); 
+  aspect-ratio: 3/4; 
+  flex-shrink: 0;
+  animation: hbeat 2.5s ease-in-out infinite;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(255, 68, 160, 0.4);
+  border: 2px solid rgba(255, 140, 220, 0.3);
+  background: #0b0014;
+}
+@keyframes hbeat{
+  0%,100%{transform:scale(1);}
+  14%{transform:scale(1.03);}
+  28%{transform:scale(1);}
+  42%{transform:scale(1.015);}
+}
+
+.main-display-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  display: block;
+  will-change: clip-path, opacity, transform;
+  opacity: 0;
+  /* Total loop time badhakar 24 seconds kar diya */
+  animation: threeImageHeartLoop 24s infinite ease-in-out; 
+}
+
+/* Har image ke beech mein 8-8 seconds ka gap kiya */
+.img1 {
+  animation-delay: 0s;
+}
+.img2 {
+  animation-delay: 8s;
+}
+.img3 {
+  animation-delay: 16s;
+}
+@keyframes threeImageHeartLoop {
+  0% {
+    opacity: 0;
+    clip-path: polygon(50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%);
+    transform: scale(0.4) rotate(5deg);
+    z-index: 1;
+  }
+  /* 1 second ke andar image full khul jayegi */
+  8.33% {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transform: scale(1) rotate(0deg);
+    z-index: 2;
+  }
+  /* Screen par lambe samay tak hold rahegi */
+  33.33% {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transform: scale(1) rotate(0deg);
+    z-index: 2;
+  }
+  /* Agle 1 second mein gayab hogi aur turant dusri aa jayegi */
+  41.66% {
+    opacity: 0;
+    clip-path: polygon(50% 15%, 80% 0%, 100% 20%, 100% 50%, 50% 95%, 0% 50%, 0% 20%, 20% 0%);
+    transform: scale(0.6) rotate(-5deg);
+    z-index: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.spark{
+  position:absolute;font-size:1rem;pointer-events:none;
+  animation:orb linear infinite;
+  top:50%;left:50%;margin-top:-.5em;margin-left:-.5em;
+  z-index: 3;
+}
+@keyframes orb{
+  from{transform:rotate(0deg) translateX(calc(min(82vw,370px)*.54)) rotate(0deg);}
+  to  {transform:rotate(360deg) translateX(calc(min(82vw,370px)*.54)) rotate(-360deg);}
+}
+
+.ily-row{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.side-gif{
+  width:clamp(80px,14vw,120px);
+  height:clamp(80px,14vw,120px);
+  object-fit:contain;
+  border-radius:12px;
+  flex-shrink:0;
+  filter:drop-shadow(0 0 14px rgba(255,100,200,.6));
+  animation:gifFloat 3.5s ease-in-out infinite;
+}
+.side-gif.left {animation-delay:0s;}
+.side-gif.right{animation-delay:-1.8s;}
+@keyframes gifFloat{
+  0%,100%{transform:translateY(0);}
+  50%    {transform:translateY(-10px);}
+}
+
+.ily{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.6rem,7.5vw,3.8rem);
+  color:#fff;
+  text-align:center;
+  min-height:1.2em;line-height:1.2;
+  flex-shrink:0;
+}
+.ily.glow{
+  color:#ffe4f8;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 20px #ff88cc,
+    0 0 42px #ff40a8,
+    0 0 80px #dd00b0,
+    0 0 130px #a80088;
+}
+.cur{
+  display:inline-block;width:2px;height:2.5rem;
+  background:#ff88cc;vertical-align:middle;margin-left:3px;
+  animation:cblink .8s step-end infinite;
+  box-shadow:0 0 12px #ff88cc,0 0 24px #ff44a0;
+}
+@keyframes cblink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* LETTER BOX */
+.letter-box{
+  width:100%;
+  background:rgba(255,255,255,.09); /* Subtle increase in visibility */
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,140,220,.25);
+  border-radius:16px;
+  padding:12px 16px 10px;
+  box-shadow:0 0 28px rgba(200,50,180,.15),inset 0 1px 0 rgba(255,255,255,.07);
+  max-height:110px;
+  overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,120,200,.4) transparent;
+}
+.letter-box::-webkit-scrollbar{width:4px;}
+.letter-box::-webkit-scrollbar-thumb{background:rgba(255,120,200,.4);border-radius:4px;}
+
+.letter-typed{
+  font-family:'Caveat',cursive;
+  font-size:1.1rem;
+  line-height:1.45;
+  color:#f5d8ff;
+}
+.ln{display:block;min-height:.1em;}
+.ln.em{color:#ffbaec;font-size:1.18rem;font-weight:700;text-shadow:0 0 12px rgba(255,100,210,.65); margin-bottom: 2px;}
+.ln.gap{min-height:.3em;}
+
+.sig{
+  font-family:'Great Vibes',cursive;font-size:1.35rem;color:#ffb4e4;
+  text-align:right;margin-top:6px;
+  text-shadow:0 0 14px rgba(255,100,210,.55);
+  opacity:0;transition:opacity 1.4s;
+}
+
+/* ENDING SECTION */
+.ending-wrap{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  opacity:0;
+  transition:opacity 1.8s;
+  padding-top:10px;
+}
+.divider{
+  width:78%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,150,220,.55),transparent);
+}
+.ending-title{
+  font-family:'Great Vibes',cursive;
+  font-size:1.9rem;
+  color:#ffcaf2;
+  text-align:center;
+  text-shadow:0 0 15px rgba(255,100,210,0.8);
+  margin-bottom:2px;
+}
+.ending-quote{
+  font-family:'Caveat',cursive;
+  font-size: clamp(1.25rem, 4vw, 1.45rem);
+  color:#fff2fc;
+  text-align:center;
+  line-height:1.4;
+  padding:0 5px;
+  text-shadow:0 0 15px rgba(255,100,210,.4);
+}
+.ending-sub{
+  font-family:'Dancing Script',cursive;font-size:.9rem;
+  color:rgba(255,200,235,.75);text-align:center;font-style:italic;letter-spacing:.5px;
+}
+.ending-hearts{font-size:1.3rem;letter-spacing:6px;}
+
+.fh{position:fixed;z-index:3;pointer-events:none;opacity:0;animation:hrise linear infinite;}
+@keyframes hrise{
+  0%  {transform:translateY(0) scale(.55);opacity:.85;}
+  100%{transform:translateY(-110vh) scale(1.25);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<canvas id="cvs"></canvas>
+
+<audio id="bgMusic" src="end.mp3" loop></audio>
+
+<!-- FIXED: Button with unique, emotional suspense text and high glow -->
+<div class="audio-overlay" id="audioOverlay">
+  <button class="open-btn" id="startBtn">✨ And Now... The Last Message ❤️</button>
+</div>
+
+<div class="page" id="mainPage">
+
+  <div class="top-title" id="topTitle">&nbsp;</div>
+
+  <div class="heart-outer" id="heartOuter">
+    <span class="spark" style="animation-duration:5s;animation-delay:0s;">✨</span>
+    <span class="spark" style="animation-duration:7s;animation-delay:-2.5s;">💫</span>
+    <span class="spark" style="animation-duration:6s;animation-delay:-4s;">⭐</span>
+    <span class="spark" style="animation-duration:9s;animation-delay:-1.5s;">🌸</span>
+
+    <img src="end1.png" alt="Forever Yours 1" class="main-display-img img1">
+    <img src="end.png" alt="Forever Yours 2" class="main-display-img img2">
+    <img src="end2.png" alt="Forever Yours 3" class="main-display-img img3">
+  </div>
+
+  <div class="ily-row">
+    <img class="side-gif left"
+      src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3VkNzdsc2FuaGtsZnBjYnF0aWtnOHUwb28zZGhwbTR1cml3Z3FueSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/FjTQGrPpq9lUlJwFnA/giphy.gif" alt="">
+
+    <div class="ily" id="ily"><span class="cur"></span></div>
+
+    <img class="side-gif right"
+      src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cTkyaG9qN3o5Y3M3Ym9pZmRxd2l2ODg3Z2NpbmZtaWYxbW55YzZqcSZlcD12MV9zdGlja2Vyc19yZWxhdEJmY3Q9cw/W23mT6GJyaNiyjcdfh/giphy.gif" alt="">
+  </div>
+
+  <div class="letter-box" id="lbox">
+    <div class="letter-typed" id="ltyped"></div>
+    <div class="sig" id="sig">— Shaina ❤️</div>
+  </div>
+
+  <div class="ending-wrap" id="endWrap">
+    <div class="divider"></div>
+    <div class="ending-title">Our Infinite Forever ✨</div>
+    <div class="ending-hearts">💗 💖 💗</div>
+    <div class="ending-quote">
+      "In all the world, there is no heart for me like yours.<br>
+      In all the world, there is no love for you like mine."
+    </div>
+    <div class="ending-sub">~ completely, deeply, and irrevocably yours 💗 ~</div>
+    <div class="divider"></div>
+    <div class="ending-sub" style="font-size:.8rem; opacity:.7; color:#ffd6f0;">
+      Meeting you was fate, but staying with you is my favorite reality. ✨
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* STARS BACKGROUND EFFECT */
+const cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+function resize(){cvs.width=innerWidth;cvs.height=innerHeight;}
+resize();window.addEventListener('resize',resize);
+const stars=Array.from({length:80},()=>({
+  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+  r:.4+Math.random()*1.5,phase:Math.random()*Math.PI*2,
+  spd:.012+Math.random()*.025,
+  col:`hsl(${285+Math.random()*85},88%,${68+Math.random()*26}%)`
+}));
+let tk=0;
+(function draw(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);tk++;
+  stars.forEach(s=>{
+    const a=.12+.88*Math.abs(Math.sin(s.phase+tk*s.spd));
+    ctx.globalAlpha=a;ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r*(0.65+.35*a),0,Math.PI*2);
+    ctx.fillStyle=s.col;ctx.fill();
+    if(a>.72){
+      ctx.globalAlpha=a*.32;ctx.strokeStyle=s.col;ctx.lineWidth=.5;
+      const arm=s.r*4*a;
+      ctx.beginPath();
+      ctx.moveTo(s.x-arm,s.y);ctx.lineTo(s.x+arm,s.y);
+      ctx.moveTo(s.x,s.y-arm);ctx.lineTo(s.x,s.y+arm);
+      ctx.stroke();
+    }
+  });
+  ctx.globalAlpha=1;requestAnimationFrame(draw);
+})();
+
+/* FLOATING HEARTS PARTICLES */
+const FH=['❤️','💗','💖','💕','🩷','💓','💝'];
+function spawnH(){
+  const h=document.createElement('div');h.className='fh';
+  h.textContent=FH[Math.floor(Math.random()*FH.length)];
+  const dur=5+Math.random()*7;
+  h.style.cssText = 'left:' + (Math.random()*100) + 'vw; bottom:-30px; font-size:' + (0.65+Math.random()*1.2) + 'rem; animation-duration:' + dur + 's; animation-delay:' + (-Math.random()*4) + 's;';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),(dur+1)*1000);
+}
+setInterval(spawnH,650);
+
+/* TYPEWRITER TEXT CONFIGURATION */
+let T=null;
+const LINES=[
+  {t:'💖 My Better Half💖',cls:'em'},
+  {t:'🎂 Happy Birthday My Love! ❤️',cls:'em'},
+  {t:'',cls:'gap'},
+  {t:'🤲 Hamesha dua karungi ki tum khush raho... Allah tumko duniya ki saari khushiyan de, In Sha Allah. 🌸'},
+  {t:'🥹 Shayad ye aakhri birthday ho tumhara jisme main tumhare saath hoon, lekin agar Allah ne chaha to har birthday hum dono saath manayenge. ❤️'},
+  {t:'',cls:'gap'},
+  {t:'🥺 Main tumhe bahut hurt kiya hai, gusse mein bina soche samjhe bahut kuch bol diya... uske liye I M REALLY SORRY. 🤍'},
+  {t:'💕 Ibran, main jaanti hoon tum mujhse kitna pyaar karte ho. Main baar baar poochti hoon iska matlab ye nahi ki mujhe pata nahi... bas jab tum kehte ho "main tumhare liye sab kuch karunga", mera dil khushi se bhar jaata hai. 🥹❤️'},
+  {t:'',cls:'gap'},
+  {t:'🌙 Chahe hamara milna muqaddar mein ho ya na ho... itna yaad rakhna ki main tumse bahut mohabbat karti hoon, aur mujhe pata hai tum bhi karte ho. ❤️'},
+  {t:'✨ Isi baat ka sukoon rahega ki humne apni zindagi ke sabse khoobsurat pal ek dusre ke saath guzare hain. 💞'},
+  {t:'📸 Hamare paas itni saari yaadein hongi... jinhe yaad karke hum hamesha muskurayenge. 🥰'},
+  {t:'',cls:'gap'},
+  {t:'🎁 Main tumhara birthday aur bhi special banana chahti thi, lekin shayad utna nahi kar paayi... I M SORRY. 🤍'},
+  {t:'🐵 Thank You So Much, Ibran... mere bandar. Mujhe itna pyaar karne ke liye, mere mood swings ko itne pyaar se jhelne ke liye. 🥹💕'},
+  {t:'🎈 Meri har dua bas yehi hai ki hum zindagi bhar saath rahein... aur har birthday par ek dusre ke surprise ka intezaar karein. 🎂❤️'},
+  {t:'',cls:'gap'},
+  {t:'💖 I love you not only for what you are... 💖'},
+  {t:'🌹 But for what I am when I am with you. 🌹'},
+  {t:'',cls:'gap'},
+  {t:'♾️ You are my forever, Ibran. ❤️🫂',cls:'em'}
+];
+
+function scrollBox(){
+  const b=document.getElementById('lbox');
+  b.scrollTop=b.scrollHeight;
+}
+
+function typeTitle(){
+  const el=document.getElementById('topTitle');
+  const txt='Written In The Stars... ✨';
+  let i=0;el.textContent='';
+  function n(){
+    if(i<txt.length){el.textContent=txt.slice(0,i+1);i++;T=setTimeout(n,60);}
+    else T=setTimeout(typeILY,500);
+  }n();
+}
+
+function typeILY(){
+  const el=document.getElementById('ily');
+  const txt='I Love You';
+  let i=0;
+  el.innerHTML='<span class="cur"></span>';
+  function n(){
+    if(i<txt.length){
+      el.innerHTML=txt.slice(0,i+1)+'<span class="cur"></span>';
+      i++;
+      T=setTimeout(n,45);
+    } else {
+      el.innerHTML=txt;
+      el.classList.add('glow');
+      T=setTimeout(typeLetter,500);
+    }
+  }n();
+}
+
+function typeLetter(){
+  const cont=document.getElementById('ltyped');
+  cont.innerHTML='';
+  doLine(cont,0);
+}
+
+function doLine(cont,li){
+  if(li>=LINES.length){
+    document.getElementById('sig').style.opacity='1';
+    T=setTimeout(()=>{ document.getElementById('endWrap').style.opacity='1'; },1100);
+    return;
+  }
+  const {t,cls}=LINES[li];
+  const sp=document.createElement('span');
+  sp.className='ln'+(cls?' '+cls:'');
+  cont.appendChild(sp);scrollBox();
+  if(!t){sp.innerHTML='&nbsp;';T=setTimeout(()=>doLine(cont,li+1),55);return;}
+  let ci=0;
+  const spd=cls==='em'?78:40,pause=cls==='em'?370:145;
+  function nc(){
+    if(ci<t.length){
+      sp.textContent=t.slice(0,ci+1);scrollBox();
+      const ch=t[ci];ci++;
+      T=setTimeout(nc,(ch===','||ch==='.')?110:spd);
+    } else { T=setTimeout(()=>doLine(cont,li+1),pause); }
+  }nc();
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  const music = document.getElementById('bgMusic');
+  music.play().catch(error => console.log("Audio playback failed due to browser policies:", error));
+
+  const overlay = document.getElementById('audioOverlay');
+  overlay.classList.add('fade-out');
+
+  const mainPage = document.getElementById('mainPage');
+  mainPage.classList.add('visible');
+
+  setTimeout(typeTitle, 500);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Here's a surprise for you!!! 🎁</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+        
+        body {
+            /* Beautiful gradient mixing the start page vibes with screenshot warmth */
+            background-color: #FFF0F5; 
+            background-image: 
+                radial-gradient(circle at 0% 0%, #2B0B1E 0%, transparent 45%),
+                radial-gradient(circle at 100% 100%, #ff758f 0%, transparent 45%),
+                linear-gradient(135deg, #FFF5F7 0%, #FFE5EC 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Pure CSS Screenshot Grid Pattern Overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 182, 193, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 182, 193, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Ambient Floating Celebration Sparkles */
+        .ambient-dust {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Screenshot Cursive Styled Header Text */
+        .surprise-header {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.2rem);
+            color: #702353; /* Elegant Deep Dark Wine Text */
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 10;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 117, 143, 0.2);
+            animation: textGlow 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes textGlow {
+            0% { transform: translateY(0); filter: drop-shadow(0 0 5px rgba(255,117,143,0.2)); }
+            100% { transform: translateY(-5px); filter: drop-shadow(0 0 15px rgba(255,117,143,0.5)); }
+        }
+        
+        /* --- 3D Gorgeous Gift Box Wrapper Matrix --- */
+        .gift-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            z-index: 10;
+            cursor: pointer;
+            perspective: 600px;
+            margin-bottom: 50px;
+            transition: transform 0.3s;
+        }
+
+        .gift-wrapper:hover {
+            transform: scale(1.03);
+        }
+
+        /* Gift Main Box Body */
+        .gift-body {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ff758f, #ff4d6d);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 20px 40px rgba(112, 35, 83, 0.3);
+            z-index: 4;
+        }
+        
+        /* Gift Lid/Cap */
+        .gift-lid {
+            position: absolute;
+            top: 55px;
+            left: -10px;
+            width: 300px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff85a2, #ff5c7a);
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            z-index: 5;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: bottom left;
+        }
+        
+        /* Vertically aligned Ribbon Tape */
+        .ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: calc(50% - 22px);
+            width: 44px;
+            height: 100%;
+            background: linear-gradient(to right, #702353, #9e3175, #702353);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Horizontally aligned Ribbon Tape on Lid */
+        .ribbon-horizontal {
+            position: absolute;
+            top: calc(50% - 8px);
+            left: 0;
+            width: 100%;
+            height: 16px;
+            background: linear-gradient(to bottom, #702353, #9e3175, #702353);
+        }
+        
+        /* Elegant Top Bow Component knot */
+        .ribbon-bow-knot {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            background: #9e3175;
+            border-radius: 50%;
+            top: -18px;
+            left: calc(50% - 18px);
+            z-index: 6;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+        }
+
+        /* Bow Left Loop wing */
+        .ribbon-bow-knot::before {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 45px;
+            background: radial-gradient(circle, #ffccd5, #9e3175 80%);
+            border-radius: 50% 50% 0 50%;
+            left: -62px;
+            top: -15px;
+            transform: rotate(-15deg);
+            box-shadow: -4px 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Bow Right Loop wing */
+        .ribbon-bow-knot::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 45px;
+            background: radial-gradient(circle, #ffccd5, #9e3175 80%);
+            border-radius: 50% 50% 50% 0%;
+            right: -62px;
+            top: -15px;
+            transform: rotate(15deg);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.15);
+            
+        }
+        
+        /* --- UNBOXING TRIGGER ANIMATIONS CLASS --- */
+        .gift-wrapper.open-box .gift-lid {
+            transform: translate(-100px, -220px) rotate(-45deg) scale(0.8);
+            opacity: 0;
+        }
+
+        .gift-wrapper.open-box .ribbon-bow-knot {
+            transform: translateY(-80px) scale(0.5);
+            opacity: 0;
+        }
+
+        /* Beautiful Interaction Unbox Button */
+        .action-unboxing-btn {
+            background: linear-gradient(135deg, #ff758f, #ff4d6d);
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 14px 45px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 10;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 0px #c9184a, 0 12px 30px rgba(255, 77, 109, 0.3);
+            text-transform: uppercase;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .action-unboxing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0px #c9184a, 0 15px 35px rgba(255, 77, 109, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .action-unboxing-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0px #c9184a, 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- Bear GIF Component Layouts --- */
+        .ss-corner-bear-gif {
+            position: fixed;
+            right: 20px;
+            bottom: -10px;
+            width: clamp(140px, 20vw, 210px);
+            height: auto;
+            z-index: 20;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.08));
+        }
+
+        /* Added Left Side Bear GIF Styles */
+        .ss-left-bear-gif {
+            position: fixed;
+            left: 20px;
+            bottom: -10px;
+            width: clamp(140px, 20vw, 210px);
+            height: auto;
+            z-index: 20;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.08));
+            /* Mirroring the gif slightly if needed, or keeping it matching */
+            transform: scaleX(-1); 
+        }
+
+        /* Micro Arrow Indicator */
+        .tap-here-indicator {
+            position: absolute;
+            right: -60px;
+            bottom: 30px;
+            color: #702353;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 15;
+            opacity: 0.8;
+            animation: arrowBob 1s infinite alternate ease-in-out;
+        }
+
+        @keyframes arrowBob {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-5px, -5px); }
+        }
+
+        /* Responsive Handlers */
+        @media (max-width: 600px) {
+            .gift-wrapper { width: 220px; height: 220px; }
+            .gift-body { height: 150px; }
+            .gift-lid { top: 45px; width: 240px; height: 35px; left: -10px; }
+            .ribbon-bow-knot::before, .ribbon-bow-knot::after { width: 50px; height: 35px; }
+            .ribbon-bow-knot::before { left: -44px; } .ribbon-bow-knot::after { right: -44px; }
+            .tap-here-indicator { right: -20px; bottom: -20px; transform: rotate(45deg); }
+            .ss-left-bear-gif, .ss-corner-bear-gif { width: 110px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-dust" id="ambientDust"></div>
+
+    <h1 class="surprise-header">Here's a surprise for you!!!</h1>
+
+    <div class="gift-wrapper" id="giftBoxContainer" onclick="triggerSurpriseUnboxing()">
+        
+        <div class="gift-lid">
+            <div class="ribbon-horizontal"></div>
+            <div class="ribbon-bow-knot"></div>
+        </div>
+
+        <div class="gift-body">
+            <div class="ribbon-vertical"></div>
+        </div>
+
+        <div class="tap-here-indicator">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#702353" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+            <span>Tap here</span>
+        </div>
+    </div>
+
+    <button class="action-unboxing-btn" onclick="triggerSurpriseUnboxing()">Open The Surprise 🎁</button>
+
+    <img class="ss-left-bear-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWxlb2JmZnMwYjc0aGFpZXAzbTU2NTJwbG81NXAzMGU5Z3huNnlvNiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/maFqQjqkqLpNJpDV6d/giphy.gif" alt="Left Dancing Bear Sticker">
+
+    <img class="ss-corner-bear-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWxlb2JmZnMwYjc0aGFpZXAzbTU2NTJwbG81NXAzMGU5Z3huNnlvNiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/maFqQjqkqLpNJpDV6d/giphy.gif" alt="Right Dancing Bear Sticker">
+
+    <script>
+        // --- 1. Ambient Background Twinkles Spawner ---
+        function initMagicDust() {
+            const container = document.getElementById("ambientDust");
+            const icons = ['✨', '💖', '🌸', '⭐'];
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement("div");
+                sparkle.style.position = "absolute";
+                sparkle.style.left = Math.random() * 100 + "vw";
+                sparkle.style.top = Math.random() * 100 + "vh";
+                sparkle.style.fontSize = Math.random() * 12 + 12 + "px";
+                sparkle.style.opacity = "0.2";
+                sparkle.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                container.appendChild(sparkle);
+            }
+        }
+
+        // --- 2. High-Performance Unboxing Timeline Script ---
+        let packageOpened = false;
+
+        function triggerSurpriseUnboxing() {
+            if (packageOpened) return;
+            packageOpened = true;
+
+            // Trigger the CSS unbox timeline transformations instantly
+            const giftBox = document.getElementById("giftBoxContainer");
+            giftBox.classList.add("open-box");
+
+            // Change Header Text with a sweet thrill loading handshake
+            document.querySelector(".surprise-header").innerHTML = "Opening your world of love... ❤️";
+
+            // Redirect smoothly to the Propose page exactly after 1.5 seconds (1500ms)
+            setTimeout(() => {
+                window.location.href = "prapose.html"; 
+            }, 1500);
+        }
+
+        window.addEventListener("DOMContentLoaded", initMagicDust);
+    </script>
+</body>
+</html>

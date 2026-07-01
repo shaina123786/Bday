@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ibran ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body {
+            background-color: #2B0B1E; 
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px 40px 20px;
+            position: relative;
+        }
+        .happy-title-combined{
+   font-size:6rem;
+   line-height:1;
+   font-weight:900;
+   color:white;
+
+   text-shadow:
+   0 0 15px #fff,
+   0 0 30px #ff758f,
+   0 0 60px #ff4d6d;
+}
+.happy-title-combined{
+ animation: glowText 2s infinite alternate;
+}
+
+@keyframes glowText{
+ from{
+   transform:scale(1);
+ }
+ to{
+   transform:scale(1.03);
+ }
+}
+
+        /* Hidden YouTube Iframe to Auto-play Background Song Safely */
+        .audio-carrier {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Floating Balloons Background Decor Layer */
+        .animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 65px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            opacity: 0.6;
+            bottom: -120px;
+        
+ animation: floatUp 14s linear infinite;
+ will-change: transform;
+
+        }
+        
+        .balloon::before {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 22px;
+            width: 0;
+            height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-bottom: 5px solid var(--balloon-color);
+        }
+        
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -22px;
+            left: 24px;
+            width: 1px;
+            height: 18px;
+            background: rgba(255,255,255,0.25);
+        }
+   .ss-style-click-btn {
+    
+    opacity: 1;
+}
+        /* @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-130vh) rotate(15deg); opacity: 0; }
+        } */
+         @keyframes floatUp{
+  0%{
+    transform:translate3d(0,0,0);
+    opacity:0;
+  }
+  10%{opacity:.6;}
+  100%{
+    transform:translate3d(0,-120vh,0);
+    opacity:0;
+  }
+}
+
+        /* --- UI Redesign: Left and Right Corner Hanging Buntings/Ribbons --- */
+        .corner-ribbon {
+            position: absolute;
+            top: 0;
+            width: 350px; /* Big and beautiful ribbons */
+            height: auto;
+            z-index: 5;
+            opacity: 0.95;
+            pointer-events: none;
+        }
+        .ribbon-left {
+            left: 0;
+        }
+        .ribbon-right {
+            right: 0;
+            transform: scaleX(-1); /* Flips perfectly for the right corner */
+        }
+
+        .bunting-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* --- Master Split Layout Matrix --- */
+        .split-responsive-grid {
+            display: flex;
+            width: 100%;
+            max-width: 1150px;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            gap: 50px;
+            margin-top: 50px;
+        }
+      
+        /* Left Text Column Workspace */
+        .left-text-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            position: relative;
+        }
+
+        /* Header Layout Text Container */
+        .header-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .happy-title-combined {
+            font-size: 4.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.1;
+            text-transform: capitalize;
+            text-shadow: 0 4px 0px #ff758f, 0 8px 20px rgba(0,0,0,0.4);
+            letter-spacing: -1px;
+            min-height: 160px;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* --- Your Floating Happy Birthday Text GIF --- */
+        /* Placed in the top-right corner exactly above the 'y' of Birthday */
+        .corner-hbd-gif {
+            position: absolute;
+            width: 110px; 
+            height: auto;
+            top: 25px; /* Adjusted to sit right over the letter 'y' region */
+            right: -45px; 
+            z-index: 12;
+            opacity: 0.95;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+        }
+
+        /* Ribbon frame Container for Line 2 */
+        .ribbon-banner-plate {
+            background: #ff4d6d;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 25px;
+            box-shadow: 0 6px 0px #c9184a, 0 10px 20px rgba(0,0,0,0.3);
+            display: inline-block;
+            margin-bottom: 35px;
+            border: 2px solid #fff;
+            min-height: 52px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .ribbon-banner-plate::before, .ribbon-banner-plate::after {
+            content: "★";
+            color: #FFD700;
+            margin: 0 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Let's Cut the Cake Button */
+        .ss-style-click-btn {
+            background: #ff758f;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 0px #ff4d6d, 0 10px 20px rgba(0,0,0,0.2);
+            opacity: 0;
+            text-transform: capitalize;
+            transition: all 0.2s ease;
+        }
+     .ss-style-click-btn {
+    
+    opacity: 1;
+}
+       
+        .ss-style-click-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px #ff4d6d, 0 12px 25px rgba(0,0,0,0.3);
+            background: #ff85a2;
+        }
+
+        /* Right Column (Slides up from absolute viewport bottom edge) */
+        .right-graphic-side {
+            flex: 0 0 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(150vh); 
+            transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s ease-in-out;
+        }
+
+        .right-graphic-side.slide-up-active {
+            opacity: 1;
+            transform: translateY(0); 
+        }
+
+        /* --- Big Frame-less Custom Graphic Container --- */
+        .free-standing-asset-container {
+            width: 420px; /* Enhanced visibility size */
+            height: 420px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .bear-birthday-asset {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Displays the full GIF smoothly without structural cuts */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Pill-shape Custom Bottom Tag */
+        .cutie-pill-tag {
+            background: #ff4d6d;
+            color: white;
+            font-weight: bold;
+            padding: 6px 35px;
+            border-radius: 15px;
+            margin-top: -10px;
+            z-index: 5;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive Viewport Shifts */
+        @media (max-width: 850px) {
+            body { padding: 120px 10px 20px 10px; }
+            .split-responsive-grid { flex-direction: column; text-align: center; gap: 50px; }
+            .left-text-side { align-items: center; text-align: center; }
+            .happy-title-combined { font-size: 3.2rem; min-height: unset; }
+            .ribbon-banner-plate { white-space: normal; font-size: 1.1rem; }
+            .right-graphic-side { flex: unset; width: 100%; }
+            .free-standing-asset-container { width: 300px; height: 300px; }
+            .corner-hbd-gif { width: 80px; top: 15px; right: -25px; }
+            .corner-ribbon { width: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio
+id="birthdaySong"
+autoplay
+loop>
+
+<source
+src="happy.mp3"
+type="audio/mpeg">
+
+</audio>
+
+    <div class="corner-ribbon ribbon-left">
+        <svg class="bunting-svg" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,0 Q25,12 50,8 Q75,12 100,0" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" fill="none"/>
+            <polygon points="5,2 15,2 10,18" fill="#ff4d6d"/>
+            <polygon points="20,4 30,5 25,22" fill="#ff758f"/>
+            <polygon points="35,6 45,6 40,21" fill="#ffb3c1"/>
+            <polygon points="50,6 60,5 55,22" fill="#ff4d6d"/>
+            <polygon points="65,5 75,4 70,19" fill="#ff758f"/>
+            <polygon points="80,2 90,1 85,15" fill="#ffb3c1"/>
+        </svg>
+    </div>
+    <div class="corner-ribbon ribbon-right">
+        <svg class="bunting-svg" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,0 Q25,12 50,8 Q75,12 100,0" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" fill="none"/>
+            <polygon points="5,2 15,2 10,18" fill="#ff4d6d"/>
+            <polygon points="20,4 30,5 25,22" fill="#ff758f"/>
+            <polygon points="35,6 45,6 40,21" fill="#ffb3c1"/>
+            <polygon points="50,6 60,5 55,22" fill="#ff4d6d"/>
+            <polygon points="65,5 75,4 70,19" fill="#ff758f"/>
+            <polygon points="80,2 90,1 85,15" fill="#ffb3c1"/>
+        </svg>
+    </div>
+
+    <div class="animation-container" id="animationContainer"></div>
+
+    <div class="split-responsive-grid">
+        
+        <div class="left-text-side">
+            <div class="header-wrapper">
+               
+                
+                <h1 class="happy-title-combined" id="line1Text"></h1>
+            </div>
+            
+            <div class="ribbon-banner-plate" id="line2TextPlate">
+                <span id="line2Text"></span>
+            </div>
+            
+            <button class="ss-style-click-btn" id="cutBtn" onclick="goToCakeCutting()">
+                Let's Cut The Cake ➔
+                
+            </button>
+        </div>
+
+        <div class="right-graphic-side" id="rightGraphicColumn">
+            <div class="free-standing-asset-container">
+                <img class="bear-birthday-asset" id="dynamicSeqGif" src="" alt="Party Asset Timeline">
+            </div>
+            <div class="cutie-pill-tag">💕 Cutie 💕</div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. Dynamic Balloon Decoration Spawner Engine ---
+        function initPartyDecorations() {
+            const container = document.getElementById("animationContainer");
+            const colors = ['#FF758F', '#FF4D6D', '#FF85A2', '#FFB3C1', '#F15BB5', '#ffccd5'];
+            
+            for(let i = 0; i < 22; i++) {
+                const balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+                
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.backgroundColor = randomColor;
+                balloon.style.left = Math.random() * 100 + "vw";
+                balloon.style.animationDelay = Math.random() * 6 + "s";
+                balloon.style.animationDuration = Math.random() * 4 + 6 + "s";
+                
+                balloon.style.setProperty('--balloon-color', randomColor);
+                container.appendChild(balloon);
+            }
+        }
+
+        // --- 2. Dual-line Typewriter Script ---
+        function startDoubleTypewriter() {
+            const line1Str = "Happy\nBirthday\nIbran ❤️";
+           const line2Arr = [
+  "21 years ago, something wonderful happened... ✨",
+  "The world got a little brighter that day ❤️",
+  "And today is all about that special person🎗️",
+  "My Man Was Born 21 Years Ago Today!☺️",
+  "Happy Bday my Jaan🎂"
+];
+            let l1Idx = 0;
+            let l2Idx = 0;
+            
+            const l1Target = document.getElementById("line1Text");
+            const l2Target = document.getElementById("line2Text");
+            const ribbonPlate = document.getElementById("line2TextPlate");
+
+            function typeLine1() {
+                if (l1Idx < line1Str.length) {
+                    const char = line1Str.charAt(l1Idx);
+                    if (char === '\n') {
+                        l1Target.innerHTML += '<br>';
+                    } else {
+                        l1Target.innerHTML += char;
+                    }
+                    l1Idx++;
+                    setTimeout(typeLine1, 120);
+                } else {
+                    setTimeout(() => {
+
+    document.getElementById("rightGraphicColumn").classList.add("slide-up-active");
+    startGifTimeline();
+
+    ribbonPlate.style.opacity = "1";
+    typeLine2();
+
+}, 300);
+                }
+                setTimeout(() => {
+    document.getElementById("rightGraphicColumn").classList.add("slide-up-active");
+    startGifTimeline();
+}, 200);
+            }
+
+            // Both lines are fully typed dynamically now!
+           let currentLine = 0;
+
+function typeLine2(){
+
+    if(currentLine >= line2Arr.length){
+
+        setTimeout(() => {
+            document.getElementById("cutBtn").classList.add("show-btn");
+        }, 500);
+
+      
+        return;
+    }
+
+    l2Target.innerHTML = "";
+
+    let text = line2Arr[currentLine];
+    let i = 0;
+
+    function type(){
+
+        if(i < text.length){
+
+            l2Target.innerHTML += text.charAt(i);
+
+            i++;
+
+            setTimeout(type,50);
+
+        }else{
+
+            currentLine++;
+
+            setTimeout(typeLine2,2500);
+
+        }
+    }
+
+    type();
+}
+
+            typeLine1();
+        }
+
+        // --- 3. Reliable 20-Second Multi-GIF Switcher Timeline ---
+        function startGifTimeline() {
+            const targetGif = document.getElementById("dynamicSeqGif");
+            
+            const gif1 = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2lidXp0ZTRsamZqZjY3NHd6aTB3enZscmswMXpoMnQ0YTk3cDNxbyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/0iBCcZ3H4WNSD3Z4KH/giphy.gif";
+
+            const gif2 =
+"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cGNubzR0YjZ3b3czM3Z6cXF4cTU1bXZ2OGZyNWtodmJkYW12Z29pbSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Mh3Sg8z9UWfnl08gVO/giphy.gif";
+        
+            const gif3 = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHpsamF4OXoxeDdiMng4dXJveWRkbDhrNjEwNjQ5bjA3ZTZ0bDBhZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/K44EaV5QW9DacoTRsX/giphy.gif";
+
+            // Instant pre-load for the first GIF right when column slides up
+            targetGif.src = gif1;
+            
+            // Switch to GIF 2 at exactly 20 seconds
+            setTimeout(() => {
+                targetGif.style.opacity = "0";
+                setTimeout(() => {
+                    targetGif.src = gif2;
+                    targetGif.style.opacity = "1";
+                }, 500);
+            }, 10000); 
+
+            // Switch to GIF 3 at exactly 40 seconds (20 seconds after the second one)
+            setTimeout(() => {
+                targetGif.style.opacity = "0";
+                setTimeout(() => {
+                    targetGif.src = gif3;
+                    targetGif.style.opacity = "1";
+                }, 500);
+            }, 20000); 
+        }
+
+    
+        window.addEventListener("DOMContentLoaded", () => {
+
+    initPartyDecorations();
+    startDoubleTypewriter();
+
+    const music =
+    document.getElementById(
+      "birthdaySong"
+    );
+
+    music.play().catch(()=>{});
+
+});
+
+        // --- 4. 1-Minute Auto Redirect Timeline Routine ---
+        setTimeout(() => {
+            goToCakeCutting();
+        }, 50000); 
+
+        function goToCakeCutting() {
+            location.href = 'cake_cutting.html';
+        }
+    </script>
+</body>
+</html>

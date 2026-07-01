@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be Mine Always? ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2B0B1E 0%, #4A1235 50%, #FF758F 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- CRITICAL: Music Unlock Overlay Layer --- */
+        #musicUnlockOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(43, 11, 30, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .unlock-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .unlock-title {
+            font-size: 1.6rem;
+            color: #702353;
+            margin-bottom: 25px;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        /* Ambient Falling Layer Matrix */
+        .falling-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .petal, .heart-fall {
+            position: absolute;
+            top: -20px;
+            pointer-events: none;
+            animation: fallAnimation linear infinite;
+        }
+
+        @keyframes fallAnimation {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(105vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Master Workspace Frame --- */
+        .propose-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            text-align: center;
+            max-width: 650px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Typewriter Headline Styling */
+        .propose-headline {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 7vw, 4.2rem);
+            color: #FFFFFF;
+            min-height: 80px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff4d6d, 0 0 30px #ff758f;
+        }
+
+        /* --- Propose Image Framing Container --- */
+        .img-card-frame {
+            width: clamp(280px, 65vw, 440px);
+            height: clamp(280px, 65vw, 440px);
+            border-radius: 40px; 
+            overflow: hidden;
+            border: 5px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 117, 143, 0.4);
+            margin-bottom: 35px;
+            background: #4A1235;
+        }
+
+        .propose-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- Interactive Button Workspace Zone --- */
+        .btn-row {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+            width: 100%;
+            position: relative; 
+        }
+
+        /* Premium Rose Gold Metallic Button Styling */
+        .rose-gold-btn {
+            background: linear-gradient(135deg, #b76e79 0%, #e0a899 25%, #f4c2c2 50%, #e0a899 75%, #b76e79 100%);
+            color: #4A1235; 
+            border: 2px solid #ffffff;
+            padding: 12px 50px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 0px #8a4f58, 0 10px 25px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            z-index: 50;
+        }
+
+        .rose-gold-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px #8a4f58, 0 12px 30px rgba(0,0,0,0.4);
+        }
+
+        .rose-gold-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px #8a4f58, 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Elusive Runaway NO Button Layout rules */
+        #noButton {
+            position: relative; 
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            z-index: 100;
+        }
+
+        /* --- Corner Sticked GIF System Layout --- */
+        .top-right-gif {
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            width: clamp(150px, 24vw, 240px);
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.3));
+        }
+
+        .bottom-left-gif {
+            position: fixed;
+            left: 30px;
+            bottom: 30px;
+            width: clamp(140px, 22vw, 220px);
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.3));
+        }
+
+        .top-left-gif {
+            position: fixed;
+            left: 30px;
+            top: 30px;
+            width: clamp(140px, 22vw, 220px);
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.3));
+        }
+
+        .bottom-right-gif {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: clamp(150px, 24vw, 240px);
+            height: auto;
+            z-index: 5;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.35));
+        }
+
+        /* Responsive UI Scaling */
+        @media (max-width: 850px) {
+            .btn-row { gap: 25px; }
+            .rose-gold-btn { padding: 10px 40px; font-size: 1.1rem; }
+            .top-left-gif, .top-right-gif { top: 15px; width: 110px; }
+            .top-left-gif { left: 15px; } .top-right-gif { right: 15px; }
+            .bottom-left-gif, .bottom-right-gif { bottom: 15px; width: 110px; }
+            .bottom-left-gif { left: 15px; } .bottom-right-gif { right: 15px; }
+            .img-card-frame { margin-bottom: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="musicUnlockOverlay">
+    <div class="unlock-card">
+        <h2 class="unlock-title">A beautiful secret is waiting for you... 🤫✨</h2>
+        
+        <button class="rose-gold-btn" onclick="unlockRomanticPage()">Open with Love ➔</button>
+    </div>
+</div>
+
+    <audio id="proposeTrack" loop preload="auto">
+        <source src="prapose.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="falling-container" id="fallingContainer"></div>
+
+    <img class="top-left-gif" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3M2xxNWY1OW5nM3k5anA3ZHJmNG1yMm10aHl3dHByeHhpNmhkOTh1MCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/egjOirKUCnpRu/giphy.gif" alt="Top Left Decor GIF">
+
+    <img class="top-right-gif" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3M2xxNWY1OW5nM3k5anA3ZHJmNG1yMm10aHl3dHByeHhpNmhkOTh1MCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/egjOirKUCnpRu/giphy.gif" alt="Top Right Decor GIF">
+    <!-- https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazZjMzQxbjc1M2t5YjNubzh0ZGw1bnE3NjVudjRpcDllYXcxMTVvbiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xwx6UV2qgwLlDQ5MRW/giphy.gif -->
+
+   
+
+    <img class="bottom-left-gif" src=" https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazZjMzQxbjc1M2t5YjNubzh0ZGw1bnE3NjVudjRpcDllYXcxMTVvbiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/YKUvclrGYmDKXwtphf/giphy.gif" alt="Bottom Left Decor GIF">
+
+    <img class="bottom-right-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExazZjMzQxbjc1M2t5YjNubzh0ZGw1bnE3NjVudjRpcDllYXcxMTVvbiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif" alt="Bottom Right Decor GIF">
+
+
+
+    <div class="propose-container">
+        
+        <h1 class="propose-headline" id="typedHeadline"></h1>
+
+        <div class="img-card-frame">
+            <img class="propose-img" src="prapose.jpeg" alt="Our Beautiful Propose Visual">
+        </div>
+
+        <div class="btn-row" id="btnContainer">
+            <button class="rose-gold-btn" id="yesButton" onclick="triggerProposalAcceptance()">Yes</button>
+            <button class="rose-gold-btn" id="noButton">No</button>
+        </div>
+
+    </div>
+
+    <script>
+        const track = document.getElementById("proposeTrack");
+        const overlay = document.getElementById("musicUnlockOverlay");
+
+        // --- Master Audio Unlocking Engine ---
+        function unlockRomanticPage() {
+            if (track) {
+                track.volume = 0.8;
+                track.play().then(() => {
+                    // Once track starts smoothly, hide overlay instantly
+                    overlay.style.opacity = "0";
+                    setTimeout(() => {
+                        overlay.style.display = "none";
+                        // Start animations only after user enters to save syncing
+                        initRomanticCascade();
+                        startContinuousTypewriter();
+                    }, 500);
+                }).catch((err) => {
+                    console.log("Audio loading stream failed:", err);
+                    // Force overlay hide if file itself is missing or corrupt
+                    overlay.style.display = "none";
+                });
+            } else {
+                overlay.style.display = "none";
+            }
+        }
+
+        // --- 2. Ambient Falling Rose Petals & Hearts Spawner ---
+        function initRomanticCascade() {
+            const box = document.getElementById("fallingContainer");
+            const colors = ['#ff4d6d', '#ff758f', '#ffccd5', '#ffb3c1', '#c9184a'];
+            
+            setInterval(() => {
+                const element = document.createElement("div");
+                const isHeart = Math.random() > 0.5;
+                
+                element.className = isHeart ? "heart-fall" : "petal";
+                element.innerHTML = isHeart ? "❤️" : "🌸";
+                element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                element.style.left = Math.random() * 100 + "vw";
+                element.style.fontSize = Math.random() * 16 + 14 + "px";
+                
+                const duration = Math.random() * 4 + 4;
+                element.style.animationDuration = duration + "s";
+                box.appendChild(element);
+                
+                setTimeout(() => element.remove(), duration * 1000);
+            }, 150);
+        }
+
+        // --- 3. Loop Typewriter Engine Script ---
+        function startContinuousTypewriter() {
+            const textStr = "Will you always be mine?💍";
+            const speed = 100; 
+            let idx = 0;
+            const target = document.getElementById("typedHeadline");
+
+            function type() {
+                if (idx < textStr.length) {
+                    target.innerHTML += textStr.charAt(idx);
+                    idx++;
+                    setTimeout(type, speed);
+                } else {
+                    setTimeout(() => {
+                        target.innerHTML = "";
+                        idx = 0;
+                        type();
+                    }, 3000);
+                }
+            }
+            type();
+        }
+
+        // --- 4. Elusive Runaway "NO" Button Escape Physics Math ---
+        const noBtn = document.getElementById("noButton");
+
+        noBtn.addEventListener("mouseenter", moveNoButtonAway);
+        noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButtonAway(); });
+
+        function moveNoButtonAway() {
+            const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+
+            const randomX = Math.max(20, Math.random() * maxX);
+            const randomY = Math.max(20, Math.random() * maxY);
+
+            noBtn.style.position = "fixed";
+            noBtn.style.left = randomX + "px";
+            noBtn.style.top = randomY + "px";
+        }
+
+        // --- 5. Happy Resolution Redirection Sequencer ---
+        function triggerProposalAcceptance() {
+            window.location.href = "ye.html"; 
+        }
+    </script>
+</body>
+</html>

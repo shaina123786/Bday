@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Ultimate Love Test 💖</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        user-select: none;
+      }
+      body {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(
+          135deg,
+          #12001e 0%,
+          #30004a 40%,
+          #60005a 70%,
+          #900050 100%
+        );
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Shimmering Stars Background */
+      .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Quiz Container */
+      .quiz-card {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 140, 220, 0.2);
+        padding: 30px 24px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 440px;
+        text-align: center;
+        z-index: 10;
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.4),
+          0 0 25px rgba(255, 100, 200, 0.15);
+      }
+
+      .quiz-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .progress-bar {
+        font-size: 0.85rem;
+        color: #ffb4e4;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .score-counter {
+        font-size: 0.9rem;
+        color: #fff;
+        background: rgba(255, 117, 143, 0.3);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 117, 143, 0.4);
+      }
+
+      /* Dynamic GIF Container - Starts with zero extra space */
+      .gif-container {
+        height: 0px;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        transition: all 0.4s ease-in-out;
+      }
+
+      /* When active, expand to show GIF */
+      .gif-container.active {
+        height: 140px;
+        margin-bottom: 20px;
+      }
+
+      .gif-container img {
+        width: 140px;
+        height: 140px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 10px rgba(255, 117, 143, 0.3));
+        display: none;
+      }
+
+      .question-text {
+        font-size: 1.35rem;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 25px;
+        line-height: 1.4;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      /* MCQ Options Wrapper */
+      .options-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .option-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        padding: 14px 20px;
+        color: #f5d8ff;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 14px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .option-btn:hover:not(:disabled) {
+        background: rgba(255, 117, 143, 0.15);
+        border-color: #ff758f;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 117, 143, 0.2);
+      }
+
+      /* Visual States for Options */
+      .option-btn.correct-choice {
+        background: rgba(40, 200, 110, 0.3) !important;
+        border-color: #28c86e !important;
+        color: #fff !important;
+        box-shadow: 0 0 15px rgba(40, 200, 110, 0.4);
+      }
+
+      .option-btn.wrong-choice {
+        background: rgba(255, 40, 110, 0.3) !important;
+        border-color: #ff286e !important;
+        color: #fff !important;
+        box-shadow: 0 0 15px rgba(255, 40, 110, 0.4);
+      }
+
+      /* Next Action Button style */
+      .next-btn {
+        width: 100%;
+        background: linear-gradient(90deg, #ff758f, #ffb4e4);
+        border: none;
+        padding: 14px;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
+        transition: all 0.3s ease;
+        display: none; /* Only visible after choosing an answer */
+      }
+      .next-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 117, 143, 0.6);
+      }
+
+      /* Funny Pop-up Message box */
+      .alert-popup {
+        position: fixed;
+        top: 22%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        background: rgba(255, 40, 110, 0.95);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: "Caveat", cursive;
+        font-size: 1.6rem;
+        letter-spacing: 0.5px;
+        text-align: center;
+        max-width: 90%;
+        width: max-content;
+      }
+      .alert-popup.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      /* Floating Hearts Elements */
+      .fh {
+        position: fixed;
+        z-index: 3;
+        pointer-events: none;
+        opacity: 0;
+        animation: hrise linear infinite;
+      }
+      @keyframes hrise {
+        0% {
+          transform: translateY(0) scale(0.55);
+          opacity: 0.85;
+        }
+        100% {
+          transform: translateY(-110vh) scale(1.25);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Audio Element -->
+    <audio id="bgMusic" src="test.mp3" loop></audio>
+
+    <div class="stars" id="starsContainer"></div>
+    <div class="alert-popup" id="alertPopup">Galat jawab! Firse socho 😤</div>
+
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <div class="progress-bar" id="progress">QUESTION 1 OF 5</div>
+        <div class="score-counter" id="scoreBoard">Score: 0 ⭐</div>
+      </div>
+
+      <!-- Compact container space on fresh load -->
+      <div class="gif-container" id="gifBox">
+        <img
+          id="quizGif"
+          src=""
+          alt="Cute Sticker"
+        />
+      </div>
+
+      <div class="question-text" id="question">Loading Question...</div>
+
+      <div class="options-wrapper" id="optionsContainer">
+        <!-- Options injected by JS -->
+      </div>
+
+      <button class="next-btn" id="nextBtn" onclick="goToNextQuestion()">Next Question ➡️</button>
+    </div>
+
+    <script>
+      const QUIZ_DATA = [
+        {
+          question: "Mera fav Food ky h? 🍽️",
+          gifs: {
+            normal: "https://media.giphy.com/media/Kbt0O5VZeofGmEaFHi/giphy.gif", // Minions dancing
+            wrong: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTB4N2E3bDhzMmVlbDV4N2NjdHlmaWI0aTV3dmpscmp6b2NzNW5wNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5ZwQbDSKy1zWg5va84/giphy.gif"
+          },
+          options: ["Pizza 🍕", "Biryani 🍛", "Roll 🌯", "Tumhra dimag khana 🧠😂"],
+          correct: 1, 
+          funnyTexts: [
+            "Pizza to pasand h but ye shi option nhi h 🍕❌",
+            "Mai bht baar bata chuki hoon to obviously shi hi bataoge na! Sahi jawab! 🍛✨💖",
+            "Hn pasand h but utna v nhi... Biryani aage h! 🌯😜",
+            "Ye mera fav h but biryani k baad hi ata h 🧠🤪🤣"
+          ]
+        },
+        {
+          question: "Mai jb frustate hoti hoon to ky krti hoon 🤔",
+          gifs: {
+            normal: "https://media.giphy.com/media/Kbt0O5VZeofGmEaFHi/giphy.gif",
+            wrong: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTB4N2E3bDhzMmVlbDV4N2NjdHlmaWI0aTV3dmpscmp6b2NzNW5wNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5ZwQbDSKy1zWg5va84/giphy.gif"
+          },
+          options: ["So jati hoon 😴", "Kch kha leti hoon 🍔", "Tumhra dimag khrb krti hoon 🥰", "Ya chillati hoon! 🗣️"],
+          correct: 3, 
+          funnyTexts: [
+            "Kumbhkaran ho kya? Sirf soti rhungi? 💤🤦‍♀️",
+            "Bhukkad smjh k rkhe ho ky mujhe 🍔😡😂",
+            "Ye krti hoon to or frustate ho jati hoon... So NO! 🥰❌",
+            "Shi pakde! Kyuki mai hmesha call pe chillati hoon jb v hoti hoon to 🗣️🔥🥳"
+          ]
+        },
+        {
+          question: "Main kis din sbse zyada royi hoon 👇🥺",
+          gifs: {
+            normal: "https://media.giphy.com/media/Kbt0O5VZeofGmEaFHi/giphy.gif",
+            wrong: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTB4N2E3bDhzMmVlbDV4N2NjdHlmaWI0aTV3dmpscmp6b2NzNW5wNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5ZwQbDSKy1zWg5va84/giphy.gif"
+          },
+          options: ["29 Jan 🗓️", "12 March 🗓️", "15 June 🗓️", "Dada ka death k tym 💔"],
+          correct: 2, 
+          funnyTexts: [
+            "29 ko to humlg dono qobool kiye the ek dusre ko, bhul gye be? 🤔🤦‍♂️",
+            "Hn royi to thi but itna v nhi re 🤫💧",
+            "Hn shi bole! Iss din tum meko chor diye the or thoda v shrm nhi aya tha bolne mai frnd bnke rhenge, besharam aadmi! 😭💔💯",
+            "Yesss! But 15 June ko jitna royi thi na usse thoda km, but iss din v bht royi thi 🥺🥀"
+          ]
+        },
+        {
+          question: "Meko ky krne mai sbse zyada maza ata h? 😎",
+          gifs: {
+            normal: "https://media.giphy.com/media/Kbt0O5VZeofGmEaFHi/giphy.gif",
+            wrong: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTB4N2E3bDhzMmVlbDV4N2NjdHlmaWI0aTV3dmpscmp6b2NzNW5wNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5ZwQbDSKy1zWg5va84/giphy.gif"
+          },
+          options: ["Sone mai 😴", "Reels dekhne mai 📱", "Tumse ladne mai ⚔️", "Ya tumse call pe baat krne mai 📞"],
+          correct: 3, 
+          funnyTexts: [
+            "Sona to meko pasand h but mai itna v nhi soti na to ye kyu choose kiye? 💤❌",
+            "Bilkul v nhi, bndr khud k trh mt smjho mujhe! 📱🐵❌",
+            "Ye ho skta h correct, but 4th option k baad hehee...💥😜",
+            "Yessss babyyy! Isme sbse zyada meko mza ata h, tumse ghnton baat krna! 📞💖🌈"
+          ]
+        },
+        {
+          question: "Mai inme se kis din sbse zyda khush thi? 🥰🎈",
+          gifs: {
+            normal: "https://media.giphy.com/media/Kbt0O5VZeofGmEaFHi/giphy.gif",
+            wrong: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTB4N2E3bDhzMmVlbDV4N2NjdHlmaWI0aTV3dmpscmp6b2NzNW5wNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5ZwQbDSKy1zWg5va84/giphy.gif"
+          },
+          options: ["11 Feb 🗓️", "11 March 🗓️", "23 March 🗓️", "25 Aug 🗓️"],
+          correct: 2, 
+          funnyTexts: [
+            "Us din to roye nhi the but something something.. 🤔🤫",
+            "Iss din mai surprise thi jo chahti thi wo hogya tha, but kahin dil mai ye v tha ye nhi hona chaiye tha 🫣❤️‍🩹",
+            "Hn jb mai boli thi YES tb na bht zyada acha lg rha tha, puri raat shi mai nind nhi aya tha bht sukoon mila tha us din 😍✨😭",
+            "Iss din ko bhul gye na? Mai prapose ki thi tumko tumhra 10 baar request krne pe! To tum khush hoge na maybe 😝🎈"
+          ]
+        }
+      ];
+
+      let currentQuestionIndex = 0;
+      let score = 0;
+      let hasAnsweredCurrent = false; // Tracks if an answer was given for the active question
+
+      // Audio Logic Controls
+      const music = document.getElementById("bgMusic");
+
+      function playMusic() {
+        if (music && music.paused) {
+          music.play().catch(err => {
+            console.log("Autoplay blocked by browser. Will play on user click interaction.");
+          });
+        }
+      }
+
+      function loadQuestion() {
+        const data = QUIZ_DATA[currentQuestionIndex];
+        hasAnsweredCurrent = false;
+
+        // Progress UI & Reset
+        document.getElementById("progress").textContent = `QUESTION ${currentQuestionIndex + 1} OF ${QUIZ_DATA.length}`;
+        document.getElementById("scoreBoard").textContent = `Score: ${score} ⭐`;
+        document.getElementById("nextBtn").style.display = "none";
+
+        // Collapse GIF Box space back to 0 on new question load
+        const gifBox = document.getElementById("gifBox");
+        const gifImg = document.getElementById("quizGif");
+        gifBox.classList.remove("active");
+        gifImg.style.display = "none";
+        gifImg.src = "";
+
+        document.getElementById("question").textContent = data.question;
+
+        // Render Options
+        const container = document.getElementById("optionsContainer");
+        container.innerHTML = "";
+
+        data.options.forEach((option, index) => {
+          const button = document.createElement("button");
+          button.className = "option-btn";
+          button.innerHTML = `<span>${option}</span> <span>✨</span>`;
+          button.onclick = () => handleAnswer(index, button);
+          container.appendChild(button);
+        });
+      }
+
+      function handleAnswer(selectedIndex, clickedButton) {
+        // Fallback safety trigger: agar load pe autoplay block tha toh click pr shuru ho jaye
+        playMusic();
+
+        const data = QUIZ_DATA[currentQuestionIndex];
+        const popup = document.getElementById("alertPopup");
+        const gifBox = document.getElementById("gifBox");
+        const gifImg = document.getElementById("quizGif");
+        const allButtons = document.querySelectorAll(".option-btn");
+
+        // Clear any old selection highlight designs safely
+        allButtons.forEach(btn => {
+          btn.classList.remove("correct-choice", "wrong-choice");
+        });
+
+        // Evaluate core lock status
+        if (!hasAnsweredCurrent) {
+          hasAnsweredCurrent = true; // LOCK future evaluation for this specific question tier
+          
+          if (selectedIndex === data.correct) {
+            score++;
+            document.getElementById("scoreBoard").textContent = `Score: ${score} ⭐`;
+          }
+        }
+
+        // Show Next button so player can read fully and progress manually
+        document.getElementById("nextBtn").style.display = "block";
+
+        // Open up space context dynamically for GIFs
+        gifBox.classList.add("active");
+        gifImg.style.display = "block";
+
+        if (selectedIndex === data.correct) {
+          clickedButton.classList.add("correct-choice");
+          gifImg.src = data.gifs.normal;
+          popup.textContent = data.funnyTexts[selectedIndex];
+          popup.style.background = "rgba(40, 200, 110, 0.95)"; // Green Success
+          popup.classList.add("show");
+        } else {
+          clickedButton.classList.add("wrong-choice");
+          gifImg.src = data.gifs.wrong;
+          popup.textContent = data.funnyTexts[selectedIndex];
+          popup.style.background = "rgba(255, 40, 110, 0.95)"; // Red Error State
+          popup.classList.add("show");
+        }
+
+        // Temporary fadeout setup for popup banner alert text
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 8000);
+      }
+
+      function goToNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < QUIZ_DATA.length) {
+          loadQuestion();
+        } else {
+          // Finished standard list arrays completely
+          window.location.href = "letter.html";
+        }
+      }
+
+      // Sparkly Starry Canvas setup logic
+      const starsWrap = document.getElementById("starsContainer");
+      for (let i = 0; i < 40; i++) {
+        const dot = document.createElement("div");
+        dot.style.position = "absolute";
+        dot.style.background = "rgba(255,255,255," + (Math.random() * 0.5 + 0.2) + ")";
+        dot.style.borderRadius = "50%";
+        dot.style.width = Math.random() * 3 + 1 + "px";
+        dot.style.height = dot.style.width;
+        dot.style.left = Math.random() * 100 + "vw";
+        dot.style.top = Math.random() * 100 + "vh";
+        starsWrap.appendChild(dot);
+      }
+
+      // Floating Hearts Canvas Engine
+      const FH = ["❤️", "💗", "💖", "💕", "🩷"];
+      function spawnH() {
+        const h = document.createElement("div");
+        h.className = "fh";
+        h.textContent = FH[Math.floor(Math.random() * FH.length)];
+        const dur = 6 + Math.random() * 5;
+        h.style.cssText = `left:${Math.random() * 100}vw; bottom:-30px; font-size:${0.6 + Math.random()}rem; animation-duration:${dur}s;`;
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), dur * 1000);
+      }
+      setInterval(spawnH, 800);
+
+      window.onload = () => {
+        loadQuestion();
+        playMusic(); // Page load hote hi chalane ka prime trigger
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Together Forever 💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #160A20 0%, #2A113B 40%, #3B1C54 70%, #52257A 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Side Decorative Borders */
+        body::before, body::after {
+            content: "❤️ ✨ ❤️ ✨ ❤️";
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 60px;
+            word-wrap: break-word;
+            font-size: 1.8rem; 
+            color: rgba(255, 117, 143, 0.4); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            writing-mode: vertical-rl;
+            letter-spacing: 25px;
+            z-index: 2;
+        }
+        body::before { left: 20px; }
+        body::after { right: 20px; }
+
+        /* Ambient Twinkling Fairy Dust */
+        .fairy-dust-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sparkle-dot {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: floatAndGlow linear infinite;
+        }
+
+        @keyframes floatAndGlow {
+            0% { transform: translateY(105vh) scale(0.3); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* --- Master Center Workspace Container --- */
+        .celebration-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10;
+            max-width: 650px;
+            width: 85%;
+            padding: 10px;
+            margin-top: -30px; 
+        }
+
+        /* --- FIXED: GIF Wrapper and Image centered properly --- */
+        .giant-gif-wrapper {
+    width: 100%;
+    max-width: 550px; /* Isko 450px se badha kar 550px kar diya */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 10px 25px rgba(255, 117, 143, 0.3));
+}
+
+.celebration-gif {
+    width: 100%;
+    height: auto;
+    max-height: 450px; /* Isko bhi 350px se badha kar 450px kar diya */
+    object-fit: contain;
+    display: block;
+}
+
+        /* --- Elegant Typewriter Content Workspace --- */
+        .typewriter-content-box {
+            min-height: 110px; 
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .typed-line {
+            font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+            font-weight: 600;
+            color: #E6E2FF; 
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid transparent;
+        }
+
+        .favorite-person-line {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.9rem, 5.5vw, 2.6rem) !important;
+            color: #FF758F !important;
+            text-shadow: 0 0 15px rgba(255, 117, 143, 0.5) !important;
+        }
+
+        .active-cursor {
+            animation: blinkCursor 0.7s step-end infinite;
+            border-right-color: #FF758F;
+        }
+
+        @keyframes blinkCursor {
+            from, to { border-right-color: transparent }
+            50% { border-right-color: #FF758F; }
+        }
+
+        /* --- Lavender Luxury Glow Action Button --- */
+        .love-test-btn {
+            background: linear-gradient(135deg, #da70d6 0%, #ba55d3 50%, #9932cc 100%);
+            color: #ffffff;
+            border: 2px solid rgba(255,255,255,0.4);
+            padding: 12px 45px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 0px #6a1b9a, 0 12px 25px rgba(153, 50, 204, 0.35);
+            transform: translateY(15px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, box-shadow 0.2s ease;
+            z-index: 50;
+        }
+
+        .love-test-btn.reveal-btn {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .love-test-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0px #6a1b9a, 0 15px 30px rgba(153, 50, 204, 0.45);
+            filter: brightness(1.08);
+        }
+
+        .love-test-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0px #6a1b9a, 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive UI Optimization */
+        @media (max-width: 850px) {
+            .love-test-btn { padding: 11px 32px; font-size: 0.95rem; }
+            .giant-gif-wrapper { max-width: 320px; }
+            body::before, body::after { font-size: 1.2rem; width: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fairy-dust-container" id="particlesContainer"></div>
+
+    <div class="celebration-panel">
+        
+        <div class="giant-gif-wrapper">
+            <img class="celebration-gif" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cHpsM2d4MDN1NXR3eWJyeDJyaWVxY2Z4bXp4M242aGJrcXgxcm56eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/LSpbBMeI6GjqegTSUI/giphy.gif" alt="Happy Hug Cutie Celebration Sticker">
+        </div>
+
+        <div class="typewriter-content-box">
+            <div class="typed-line" id="line1"></div>
+            <div class="typed-line" id="line2"></div>
+            <div class="typed-line favorite-person-line" id="line3"></div>
+        </div>
+
+        <button class="love-test-btn" id="testBtn" onclick="routeToLoveQuizPage()">💕 Let's Test Your Love →</button>
+
+    </div>
+
+    <script>
+        function initFairyDustEngine() {
+            const container = document.getElementById("particlesContainer");
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement("div");
+                particle.className = "sparkle-dot";
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + "px";
+                particle.style.height = size + "px";
+                
+                particle.style.left = Math.random() * 100 + "vw";
+                particle.style.animationDelay = Math.random() * 6 + "s";
+                particle.style.animationDuration = Math.random() * 4 + 5 + "s";
+                particle.style.opacity = Math.random() * 0.4 + 0.2;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        const typewriterScriptArray = [
+            { id: "line1", text: "Thank You For Choosing Me," },
+            { id: "line2", text: "No Matter What Happens," },
+            { id: "line3", text: "You'll Always Be My Favourite Person ❤️" }
+        ];
+
+        let currentLineIndex = 0;
+
+        function runStepwiseTypewriter() {
+            if (currentLineIndex >= typewriterScriptArray.length) {
+                setTimeout(() => {
+                    document.getElementById("testBtn").classList.add("reveal-btn");
+                }, 200);
+                return;
+            }
+
+            const currentLineConfig = typewriterScriptArray[currentLineIndex];
+            const targetElement = document.getElementById(currentLineConfig.id);
+            const rawStringText = currentLineConfig.text;
+            let characterIndex = 0;
+
+            targetElement.classList.add("active-cursor");
+
+            function typeCharacters() {
+                if (characterIndex < rawStringText.length) {
+                    targetElement.innerHTML += rawStringText.charAt(characterIndex);
+                    characterIndex++;
+                    setTimeout(typeCharacters, 65); 
+                } else {
+                    targetElement.classList.remove("active-cursor");
+                    currentLineIndex++;
+                    setTimeout(runStepwiseTypewriter, 500); 
+                }
+            }
+
+            typeCharacters();
+        }
+
+        function routeToLoveQuizPage() {
+            window.location.href = "test.html"; 
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            initFairyDustEngine();
+            setTimeout(runStepwiseTypewriter, 600);
+        });
+    </script>
+</body>
+</html>

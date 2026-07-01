@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magical Nested 3D Cube ✨</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #07020d 0%, #0f0314 40%, #1c0522 70%, #2b0630 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            perspective: 2500px;
+            padding-top: 20px;
+        }
+
+        /* Twinkling Star Background */
+        .star-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: float 8s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(105vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
+        }
+
+        .heading-container {
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            margin-bottom: 10px;
+            max-width: 90%;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .heading-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: #fff;
+            text-shadow: 0 0 10px #ff0055, 0 0 25px #ff3366;
+        }
+
+        /* ══ 3D MASTER PLATFORM ══ */
+        .stage-3d {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            margin-top: auto;
+            margin-bottom: auto;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .stage-open-active .stage-3d {
+            transform: scale(0.72);
+        }
+
+        .cube-perspective-wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: rotateGlobalCube 28s linear infinite;
+        }
+        
+        @keyframes rotateGlobalCube {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            33% { transform: rotateX(-120deg) rotateY(120deg) rotateZ(60deg); }
+            66% { transform: rotateX(120deg) rotateY(240deg) rotateZ(-60deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(0deg); }
+        }
+
+        /* ══ OUTER CUBE ══ */
+        .outer-cube {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+
+        .outer-face {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border: 3.5px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 0 0 40px rgba(186, 85, 211, 0.6), inset 0 0 50px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(135deg, rgba(48, 11, 66, 0.95), rgba(20, 5, 30, 0.98));
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease;
+            overflow: hidden;
+        }
+        .outer-face img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0.95;
+            transition: opacity 0.8s ease;
+        }
+
+        .out-front  { transform: rotateY(0deg) translateZ(160px); }
+        .out-back   { transform: rotateY(180deg) translateZ(160px); }
+        .out-left   { transform: rotateY(-90deg) translateZ(160px); }
+        .out-right  { transform: rotateY(90deg) translateZ(160px); }
+        .out-top    { transform: rotateX(90deg) translateZ(160px); }
+        .out-bottom { transform: rotateX(-90deg) translateZ(160px); }
+
+        /* Outer Cube Open */
+        .stage-open .out-front  { transform: rotateY(0deg) translateZ(380px) rotateX(-25deg); opacity: 0.55; }
+        .stage-open .out-back   { transform: rotateY(180deg) translateZ(380px) rotateX(-25deg); opacity: 0.55; }
+        .stage-open .out-left   { transform: rotateY(-90deg) translateZ(380px) rotateX(-25deg); opacity: 0.55; }
+        .stage-open .out-right  { transform: rotateY(90deg) translateZ(380px) rotateX(-25deg); opacity: 0.55; }
+        .stage-open .out-top    { transform: rotateX(90deg) translateZ(380px) rotateY(-25deg); opacity: 0.55; }
+        .stage-open .out-bottom { transform: rotateX(-90deg) translateZ(380px) rotateY(25deg); opacity: 0.55; }
+
+        /* ══ INNER SECRET CUBE ══ */
+        .inner-cube {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: scale(0.1);
+            transition: opacity 0.6s ease, transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+            cursor: pointer;
+        }
+
+        .stage-open .inner-cube {
+            opacity: 1;
+            transform: scale(1);
+            animation: spinInnerCube 8s linear infinite;
+        }
+
+        .stage-inner-open .inner-cube {
+            transform: scale(1.45); 
+            animation: spinInnerCube 12s linear infinite;
+        }
+
+        @keyframes spinInnerCube {
+            0% { transform: scale(var(--cube-scale, 1)) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: scale(var(--cube-scale, 1)) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        .stage-open { --cube-scale: 1; }
+        .stage-inner-open { --cube-scale: 1.45; }
+
+        .inner-face {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border: 3px solid #ff2a5f;
+            box-shadow: 0 0 30px #ff2a5f, inset 0 0 20px rgba(255,255,255,0.1);
+            background: #0d0214;
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease;
+            overflow: hidden;
+        }
+        .inner-face img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+
+        .in-front  { transform: rotateY(0deg) translateZ(110px); }
+        .in-back   { transform: rotateY(180deg) translateZ(110px); }
+        .in-left   { transform: rotateY(-90deg) translateZ(110px); }
+        .in-right  { transform: rotateY(90deg) translateZ(110px); }
+        .in-top    { transform: rotateX(90deg) translateZ(110px); }
+        .in-bottom { transform: rotateX(-90deg) translateZ(110px); }
+
+        .stage-inner-open .in-front  { transform: rotateY(0deg) translateZ(260px) rotateX(-15deg); opacity: 0.95; }
+        .stage-inner-open .in-back   { transform: rotateY(180deg) translateZ(260px) rotateX(-15deg); opacity: 0.95; }
+        .stage-inner-open .in-left   { transform: rotateY(-90deg) translateZ(260px) rotateX(-15deg); opacity: 0.95; }
+        .stage-inner-open .in-right  { transform: rotateY(90deg) translateZ(260px) rotateX(-15deg); opacity: 0.95; }
+        .stage-inner-open .in-top    { transform: rotateX(90deg) translateZ(260px) rotateY(-15deg); opacity: 0.95; }
+        .stage-inner-open .in-bottom { transform: rotateX(-90deg) translateZ(260px) rotateY(15deg); opacity: 0.95; }
+
+        /* Hint Text */
+        .click-hint {
+            position: relative;
+            margin-bottom: 25px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.9rem;
+            color: #ffccd5;
+            text-shadow: 0 0 12px #ff4d6d;
+            animation: pulse 1.2s infinite alternate ease-in-out;
+            z-index: 50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        @keyframes pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
+
+        /* ══ FIXED: SQUARE SHAYARI BOX CONTAINER ══ */
+        .shayari-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            width: 320px;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 22px;
+            background: rgba(13, 3, 18, 0.96);
+            border: 2px solid #ff2a5f;
+            border-radius: 14px;
+            box-shadow: 0 0 40px rgba(255, 42, 95, 0.8), inset 0 0 20px rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow: hidden;
+        }
+
+        .stage-inner-open-active .shayari-container {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+            pointer-events: auto;
+        }
+
+        .shayari-scroll-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            scrollbar-width: none;
+        }
+        .shayari-scroll-wrapper::-webkit-scrollbar { display: none; }
+
+        .shayari-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            line-height: 1.5;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 6px rgba(255, 42, 95, 0.6);
+            white-space: pre-line;
+            width: 100%;
+        }
+
+        /* Control Fold Button */
+        .corner-fold-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(255, 42, 95, 0.2);
+            border: 2px solid #ff2a5f;
+            color: #fff;
+            padding: 10px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            z-index: 600;
+            box-shadow: 0 0 15px rgba(255, 42, 95, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .corner-fold-btn:hover {
+            background: #ff2a5f;
+            box-shadow: 0 0 25px #ff2a5f;
+            transform: scale(1.05);
+        }
+        .corner-fold-btn.show-btn {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* ══ NEXT BUTTON (FIXED TO REDIRECT) ══ */
+        .next-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(255, 42, 95, 0.85);
+            border: 2px solid #ff2a5f;
+            color: #fff;
+            padding: 10px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            z-index: 600;
+            box-shadow: 0 0 20px rgba(255, 42, 95, 0.6);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .next-btn:hover {
+            background: #ff2a5f;
+            box-shadow: 0 0 30px #ff2a5f;
+            transform: scale(1.05);
+        }
+        .next-btn.hide-btn {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+
+        .audio-btn {
+            position: fixed; bottom: 25px; left: 25px;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+            color: #fff; padding: 8px 18px; font-size: 0.85rem; font-weight: 700;
+            border-radius: 20px; z-index: 600; cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .stage-open-active .heading-container { opacity: 0; transform: translateY(-30px); pointer-events: none; }
+        
+        .cursor-blink { border-right: 2.5px solid #ff0055; animation: blink 0.7s step-end infinite; }
+        @keyframes blink { from, to { border-right-color: transparent; } 50% { border-right-color: #ff0055; } }
+    </style>
+</head>
+<body id="bodyContext">
+
+    <audio id="bgSong" loop preload="auto">
+        <source src="memories.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="star-field" id="starField"></div>
+    
+    <button class="audio-btn" onclick="handleAudioToggle()" id="audioBtn">🎵 Song Paused</button>
+    
+    <!-- Next button now calls directRedirect function -->
+    <button class="next-btn" id="nextBtn" onclick="directRedirect(event)">Next ➔</button>
+    <button class="corner-fold-btn" id="foldBtn" onclick="handleFoldAction()">✨ Fold Back</button>
+
+    <div class="heading-container">
+        <h2 class="heading-text" id="mainHeading"></h2>
+    </div>
+
+    <!-- 3D Master Layout Platform -->
+    <div class="stage-3d" id="mainStage">
+        <div class="cube-perspective-wrapper">
+            
+            <!-- OUTER CUBE -->
+            <div class="outer-cube" id="outerBox" onclick="triggerCubeUnboxing(event)">
+                <div class="outer-face out-front"><img src="ibran1.jpeg" alt="Pic 1"></div>
+                <div class="outer-face out-back"><img src="ibran2.jpeg" alt="Pic 2"></div>
+                <div class="outer-face out-left"><img src="ibran3.jpeg" alt="Pic 3"></div>
+                <div class="outer-face out-right"><img src="ibran4.jpeg" alt="Pic 4"></div>
+                <div class="outer-face out-top"><img src="ibran5.jpeg" alt="Pic 5"></div>
+                <div class="outer-face out-bottom"><img src="ibran6.jpeg" alt="Pic 6"></div>
+            </div>
+
+            <!-- INNER CUBE -->
+            <div class="inner-cube" id="innerBox" onclick="triggerInnerUnboxing(event)">
+                <div class="inner-face in-front"><img src="pic2.png" alt="Chat 1"></div>
+                <div class="inner-face in-back"><img src="pic3.png" alt="Chat 2"></div>
+                <div class="inner-face in-top"><img src="pic6.png" alt="Chat 5"></div>
+                <div class="inner-face in-left"><img src="pic4.png" alt="Chat 3"></div>
+                <div class="inner-face in-right"><img src="pic5.png" alt="Chat 4"></div>
+                <div class="inner-face in-bottom"><img src="pic1.png" alt="Chat 6"></div>
+            </div>
+
+        </div>
+
+        <!-- Embedded Square/Rectangular Core Shayari Container -->
+        <div class="shayari-container" id="shayariBox">
+            <div class="shayari-scroll-wrapper" id="scrollWrapper">
+                <p class="shayari-text" id="shayariTarget"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Hint Controls -->
+    <div class="click-hint" id="hintText" onclick="triggerCubeUnboxing(event)">🎁 Click Cube to Unbox➔</div>
+
+    <script>
+        const stage = document.getElementById("mainStage");
+        const bodyCtx = document.getElementById("bodyContext");
+        const foldBtn = document.getElementById("foldBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const mainHeading = document.getElementById("mainHeading");
+        const shayariTarget = document.getElementById("shayariTarget");
+        const scrollWrapper = document.getElementById("scrollWrapper");
+        const hintText = document.getElementById("hintText");
+        const song = document.getElementById("bgSong");
+        const audioBtn = document.getElementById("audioBtn");
+
+        const secretTextString = "U R My Supercalifragilisticexpialidocious Person 💖";
+        let characterIndex = 0;
+
+        function runTypewriterHeader() {
+            mainHeading.classList.add("cursor-blink");
+            if (characterIndex < secretTextString.length) {
+                mainHeading.innerHTML += secretTextString.charAt(characterIndex);
+                characterIndex++;
+                setTimeout(runTypewriterHeader, 70);
+            } else {
+                mainHeading.classList.remove("cursor-blink");
+                setTimeout(() => {
+                    mainHeading.innerHTML = "";
+                    characterIndex = 0;
+                    runTypewriterHeader();
+                }, 3000);
+            }
+        }
+
+        const shayariLines = [
+            "28 October ka wo haseen sa aaghaz tha... 📱✨",
+            "Jab tumhari us chhoti si request mein",
+            "Ek khoobsurat si umeed chhupi hui thi... 💌 \n",
+            "11 March ko tumne apne dil ka izhaar kiya... 🌹❤️",
+            "Tarikh 23 march thi jb maine v haan kah k apne dil ka izhaar kiya 🤫💍 \n",
+            "kayi martaba lade, kayi baar hue hai ek dusre se juda,💔",
+            "Magar mohabbat ne hamesha humdono ko phir se mila diya... 🫂✨ \n",
+            "Mere gusse ko aur badhane wale bhi tum ho... 😤❤️",
+            "Aur usi gusse ko ek muskurahat mein badalne wale bhi tum hi ho... 🥹 \n",
+            "Maanti hoon ho jati h glti kayi baar mujhse, thoda nadaan mijaaj h mera,",
+            "Par muskurate hue maaf kar dena,Ye tumhari sabse pyari ada hai... 🤍 \n",
+            "Na jaane ye rishta Rab ne kis dua se likha hai... 🤲✨",
+            "Bas itni si iltija hai us Khuda se...",
+            "Har janam mein tera hi naam meri taqdeer mein likha ho... ❤️🌙",
+            "In Sha Allah... \n",
+            "Ye silsila yunhi chalta rahe...",
+            "Tum meri dua bano...",
+            "Aur main tumhari muskurahat... 🌹✨ \n",
+            "Aakhir mein bas itna hi kehna hai...",
+            "Har kahaani ka ek khoobsurat anjaam hota hai...",
+            "Shayd isliye jamane mai mohabbat ka itna ahtram hota h, 💖",
+            "or jo tum jaise humsafar k saath bite,wo har lambha nayab hota h ♾️"
+        ];
+
+        let lineIndex = 0;
+        let charIndex = 0;
+        let shayariTimer = null;
+
+        function typeShayari() {
+            if (lineIndex < shayariLines.length) {
+                let currentLine = shayariLines[lineIndex];
+                if (charIndex < currentLine.length) {
+                    shayariTarget.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    shayariTimer = setTimeout(typeShayari, 40);
+                    scrollWrapper.scrollTop = scrollWrapper.scrollHeight;
+                } else {
+                    shayariTarget.innerHTML += "\n";
+                    lineIndex++;
+                    charIndex = 0;
+                    shayariTimer = setTimeout(typeShayari, 500);
+                }
+            }
+        }
+
+        // --- NEW: Next click directs to end.html ---
+        function directRedirect(e) {
+            if (e) e.stopPropagation();
+            window.location.href = "end.html";
+        }
+
+        // --- STEP 1: Outer Unbox ---
+        function triggerCubeUnboxing(e) {
+            if (e) e.stopPropagation();
+            if (stage.classList.contains("stage-inner-open")) return;
+            
+            if(song.paused) {
+                song.play().then(() => {
+                    audioBtn.innerHTML = "🎵 Song Playing";
+                }).catch(()=>{});
+            }
+
+            stage.classList.add("stage-open");
+            bodyCtx.classList.add("stage-open-active");
+            
+            // Toggle Buttons
+            nextBtn.classList.add("hide-btn");
+            foldBtn.classList.add("show-btn"); 
+            
+            hintText.innerHTML = "💖 Click the Glowing Cube Inside ➔";
+            hintText.style.display = "block";
+            hintText.style.opacity = "1";
+            hintText.style.pointerEvents = "auto";
+        }
+
+        // --- STEP 2: Inner Cube Scales Up + Square Container ---
+        function triggerInnerUnboxing(e) {
+            if (e) e.stopPropagation();
+            
+            stage.classList.add("stage-inner-open");
+            bodyCtx.classList.add("stage-inner-open-active");
+            
+            hintText.style.opacity = "0";
+            hintText.style.pointerEvents = "none";
+            setTimeout(() => {
+                if (stage.classList.contains("stage-inner-open")) {
+                    hintText.style.display = "none";
+                }
+            }, 300);
+
+            clearTimeout(shayariTimer);
+            shayariTarget.innerHTML = "";
+            lineIndex = 0;
+            charIndex = 0;
+            setTimeout(typeShayari, 800);
+        }
+
+        // --- STEPPER FOLD LOGIC ---
+        function handleFoldAction() {
+            if (stage.classList.contains("stage-inner-open")) {
+                stage.classList.remove("stage-inner-open");
+                bodyCtx.classList.remove("stage-inner-open-active");
+                
+                clearTimeout(shayariTimer);
+                shayariTarget.innerHTML = "";
+                
+                hintText.style.display = "block";
+                setTimeout(() => {
+                    hintText.innerHTML = "💖 Click the Glowing Cube Inside ➔";
+                    hintText.style.opacity = "1";
+                    hintText.style.pointerEvents = "auto";
+                }, 100);
+            } 
+            else if (stage.classList.contains("stage-open")) {
+                stage.classList.remove("stage-open");
+                bodyCtx.classList.remove("stage-open-active");
+                
+                // Reset Buttons
+                foldBtn.classList.remove("show-btn");
+                nextBtn.classList.remove("hide-btn");
+                
+                hintText.style.display = "block";
+                hintText.innerHTML = "🎁 Click Cube to Unbox My Heart ➔";
+                hintText.style.opacity = "1";
+                hintText.style.pointerEvents = "auto";
+            }
+        }
+
+        // --- Particles ---
+        const starField = document.getElementById("starField");
+        for(let i=0; i<15; i++) { spawnStar(); }
+        setInterval(spawnStar, 500);
+
+        function spawnStar() {
+            const star = document.createElement("div");
+            star.className = "star";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.width = star.style.height = Math.random() * 3 + 2 + "px";
+            const speed = Math.random() * 4 + 6;
+            star.style.animation = `float ${speed}s linear infinite`;
+            starField.appendChild(star);
+            setTimeout(() => star.remove(), speed * 1000);
+        }
+
+        function handleAudioToggle() {
+            if (song.paused) {
+                song.play();
+                audioBtn.innerHTML = "🎵 Song Playing";
+            } else {
+                song.pause();
+                audioBtn.innerHTML = "🔇 Song Paused";
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            setTimeout(runTypewriterHeader, 500);
+        });
+    </script>
+</body>
+</html>

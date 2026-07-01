@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Letter For You ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@600;700&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+        /* ══ BACKGROUND — Grid & Soft Pink Gradient ══ */
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            background: radial-gradient(ellipse at 60% 10%, #fde8ee 0%, #f9c0cc 40%, #f0a0b8 100%);
+            position: relative;
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Grid Dots Overlay */
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+            background-image: radial-gradient(circle, rgba(190,80,110,0.12) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        /* White Cloud Puffs Top */
+        .clouds { position: fixed; top: 0; left: 0; right: 0; height: 90px; z-index: 2; pointer-events: none; }
+        .cloud { position: absolute; top: 0; background: #fff; border-radius: 50px; opacity: 0.85; }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+        .c1{width:120px;height:40px;left:5%;}.c1::before{width:60px;height:60px;top:-30px;left:10px;}.c1::after{width:50px;height:50px;top:-20px;left:50px;}
+        .c2{width:100px;height:35px;left:25%;}.c2::before{width:55px;height:55px;top:-28px;left:8px;}.c2::after{width:45px;height:45px;top:-18px;left:45px;}
+        .c3{width:130px;height:42px;left:50%;}.c3::before{width:65px;height:65px;top:-32px;left:12px;}.c3::after{width:55px;height:55px;top:-22px;left:55px;}
+        .c4{width:90px;height:32px;left:75%;}.c4::before{width:50px;height:50px;top:-25px;left:8px;}.c4::after{width:40px;height:40px;top:-16px;left:40px;}
+
+        /* Rose Corners */
+        .rose-corner { position: fixed; pointer-events: none; z-index: 2; font-size: 2.8rem; line-height: 1; filter: drop-shadow(0 4px 8px rgba(180,60,90,0.3)); }
+        .rose-tl { top:60px; left:10px; transform:rotate(-15deg); font-size:5rem; opacity:.85; }
+        .rose-tr { top:55px; right:12px; transform:rotate(15deg); font-size:4.5rem; opacity:.8; }
+        .rose-bl { bottom:30px; left:8px; transform:rotate(10deg); font-size:4rem; opacity:.75; }
+        .rose-br { bottom:25px; right:10px; transform:rotate(-10deg);font-size:4.5rem; opacity:.8; }
+
+        /* Floating Petals */
+        .petal { position: fixed; z-index: 3; pointer-events: none; font-size: 1.1rem; opacity: 0; animation: petalFall linear infinite; }
+        @keyframes petalFall {
+            0% { transform: translateY(-30px) rotate(0deg); opacity: .7; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ══ STAGE CONTAINER ══ */
+        .stage {
+            position: relative; z-index: 10;
+            width: 420px; height: 640px;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 40px;
+        }
+
+        /* --- Envelope Ribbon Writing Quill GIF --- */
+        .envelope-top-sticker {
+            position: absolute;
+            bottom: 320px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px; 
+            height: 400px;
+            z-index: 40;
+            filter: drop-shadow(0 4px 15px rgba(140,40,80,0.15));
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .interaction-stage-open .envelope-top-sticker {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px) scale(0.5);
+            pointer-events: none;
+        }
+
+        /* ══ INTERACTIVE ENVELOPE ══ */
+        .env-wrap {
+            position: absolute; bottom: 40px;
+            width: 380px; height: 250px;
+            cursor: pointer; z-index: 20;
+            transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+        }
+        .env-wrap.floating-active { animation: envFloat 4s ease-in-out infinite; }
+        @keyframes envFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .env-body {
+            position: absolute; inset: 0; border-radius: 12px;
+            background: linear-gradient(160deg, #e8c5d4 0%, #d8a0bc 60%, #c87099 100%);
+            box-shadow: 0 20px 50px rgba(140,40,80,.3), 0 4px 15px rgba(0,0,0,.15);
+            z-index: 21;
+        }
+        .env-seal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2.6rem; z-index: 26; filter: drop-shadow(0 3px 8px rgba(180,40,80,.5));
+            transition: opacity .3s ease;
+        }
+
+        .env-left { position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-bottom: 125px solid #c06088; border-right: 190px solid transparent; border-radius: 0 0 0 12px; z-index: 24; }
+        .env-right { position: absolute; bottom: 0; right: 0; width: 0; height: 0; border-bottom: 125px solid #b05078; border-left: 190px solid transparent; border-radius: 0 0 12px 0; z-index: 24; }
+        .env-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 32px; background: linear-gradient(180deg, #c87099 0%, #a85580 100%); border-radius: 0 0 12px 12px; z-index: 25; }
+
+        /* ENVELOPE TOP FLAP */
+        .env-flap {
+            position: absolute; top: 0; left: 0; right: 0; width: 0; height: 0;
+            border-top: 130px solid #d8a0bc; border-left: 190px solid transparent; border-right: 190px solid transparent;
+            transform-origin: top center; transition: transform .6s cubic-bezier(.4, 0, .2, 1); z-index: 22;
+        }
+        .flap-open { transform: rotateX(180deg); z-index: 11; }
+
+        /* SATIN RIBBON WITH KNOT */
+        .ribbon { position: absolute; inset: 0; z-index: 27; pointer-events: none; transition: opacity .4s ease, transform .4s ease; }
+        .ribbon.hide { opacity: 0; transform: scale(0.8); }
+
+        .tap-hint {
+            position: absolute; bottom: -45px; left: 50%; transform: translateX(-50%);
+            font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #8b2252; white-space: nowrap;
+            text-shadow: 0 2px 8px rgba(255,160,200,.6); animation: hintPulse 2s ease-in-out infinite; transition: opacity .3s; z-index: 28;
+        }
+        .tap-hint.hide { opacity: 0; pointer-events: none; }
+        @keyframes hintPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* ══ PREMIUM NOTEBOOK LETTER PAPER ══ */
+        .letter-paper {
+            position: absolute; left: 50%;
+            bottom: 55px; 
+            transform: translateX(-50%);
+            width: 350px;
+            height: 60px; 
+            max-height: 480px; 
+            z-index: 15;
+            background: #ffffff;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(220,140,170,.18) 32px),
+                linear-gradient(90deg, transparent 44px, rgba(220,100,130,.15) 44px, rgba(220,100,130,.15) 45px, transparent 46px);
+            border-radius: 12px 12px 6px 6px;
+            box-shadow: 0 -5px 25px rgba(160,60,100,0.15), inset 0 1px 0 rgba(255,255,255,0.9);
+            padding: 25px 20px 20px 52px; 
+            opacity: 0;
+            overflow-y: auto; 
+            transition: height 0.1s linear, bottom 0.1s linear, opacity 0.4s ease, transform 0.6s ease;
+            border-top: 4px solid #e2d4d8;
+            scrollbar-width: thin;
+            scrollbar-color: #f4a8c5 transparent;
+            pointer-events: none;
+        }
+
+        .letter-paper.rising { opacity: 1; z-index: 30; pointer-events: auto; }
+
+        /* --- Inside Letter Corner Love Hearts GIF --- */
+        .letter-corner-gif {
+            position: absolute; 
+            top: 20px; 
+            right: 15px;
+            width: 100px; 
+            height: auto;
+            z-index: 35;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .letter-paper.rising .letter-corner-gif { 
+            opacity: 1; 
+            transform: scale(1); 
+        }
+
+        /* --- Line Spacing Setup --- */
+        .letter-body {
+            font-family: 'Caveat', cursive; 
+            font-size: 1.35rem;
+            line-height: 1.35; 
+            color: #6b1a3a; 
+            padding-top: 10px;
+        }
+        .letter-body .ln { 
+            display: block; 
+            min-height: 25px; 
+            margin-bottom: 5px; 
+            word-break: break-word; 
+        }
+        .letter-body .ln.gap { min-height: 10px; }
+
+        .letter-body, .letter-body * { spellcheck: false; outline: none; border: none; }
+
+        .letter-sig {
+            font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #a03060;
+            text-align: right; margin-top: 15px; opacity: 0; transition: opacity 0.8s;
+            padding-right: 10px;
+        }
+        .close-hint {
+            font-family: 'Dancing Script', cursive; font-size: 1rem; color: #c07099;
+            text-align: center; margin-top: 10px; opacity: 0; transition: opacity 0.8s;
+            cursor: pointer; padding-bottom: 5px;
+        }
+
+        .cursor-blink { border-right: 2.5px solid #ff758f; animation: blink 0.7s step-end infinite; }
+        @keyframes blink { from, to { border-right-color: transparent; } 50% { border-right-color: #ff758f; } }
+
+        /* ══ FLOATING NEXT MEMORIES BUTTON ══ */
+        .next-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #ffffff;
+            background: linear-gradient(135deg, #ff758f 0%, #ff7eb3 100%);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+        }
+        .next-btn:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 117, 143, 0.6);
+        }
+        .next-btn:active {
+            transform: scale(0.98) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="clouds">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div>
+</div>
+
+<div class="rose-corner rose-tl">🌹🌺🌸</div><div class="rose-corner rose-tr">🌸🌺🌹</div>
+<div class="rose-corner rose-bl">🌹🌸</div><div class="rose-corner rose-br">🌸🌹</div>
+
+<!-- Permanent Next Button linked directly to memories.html -->
+<a href="memories.html" class="next-btn">Next ✨</a>
+
+<div class="stage" id="stage">
+
+    <img class="envelope-top-sticker" id="envSticker" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODhjZmVrMDF1MmNmODN6MXQ3bWpiaXY3aGN5NzU4aGhvZHl2ejVtaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/zmCraLMBWi9TgYL8l6/giphy.gif" alt="Writing Quill Sticker">
+
+    <div class="letter-paper" id="letterPaper" onclick="handleLetterClick(event)">
+        <img class="letter-corner-gif" id="letterSticker" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2Z2cmczYzdoaTRhZmFuOXE2Nmo4ZTI5bmNkeXR5N2hsd2t4cXIyYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6tWohC2jxBQovcDBQv/giphy.gif" alt="Cute Hearts Sticker">
+
+        <div class="letter-body" id="letterBody"></div>
+        <div class="letter-sig" id="letterSig">Forever yours, Shaina ❤️</div>
+        <div class="close-hint" id="closeHint">~ tap letter to fold back ~</div>
+    </div>
+
+    <div class="env-wrap floating-active" id="envWrap" onclick="handleEnvelopeClick()">
+        <div class="env-body"></div>
+        <div class="env-left"></div><div class="env-right"></div><div class="env-bottom-bar"></div>
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-seal" id="envSeal">💌</div>
+
+        <div class="ribbon" id="ribbon">
+            <svg width="180" height="130" viewBox="0 0 180 130" fill="none">
+                <rect x="0" y="58" width="180" height="13" rx="6.5" fill="url(#hr)"/>
+                <rect x="83" y="0" width="13" height="130" rx="6.5" fill="url(#vr)"/>
+                <ellipse cx="56" cy="65" rx="32" ry="20" fill="#7a1f50" transform="rotate(-20 56 65)" opacity=".9"/>
+                <ellipse cx="56" cy="65" rx="22" ry="13" fill="#a03060" transform="rotate(-20 56 65)"/>
+                <ellipse cx="124" cy="65" rx="32" ry="20" fill="#7a1f50" transform="rotate(20 124 65)" opacity=".9"/>
+                <ellipse cx="124" cy="65" rx="22" ry="13" fill="#a03060" transform="rotate(20 124 65)"/>
+                <circle cx="90" cy="65" r="16" fill="#5a1040"/><circle cx="90" cy="65" r="10" fill="#8b2458"/><circle cx="86" cy="61" r="4" fill="#c05880" opacity=".6"/>
+                <path d="M84 76 Q70 98 58 122" stroke="#6a1848" stroke-width="11" stroke-linecap="round"/>
+                <path d="M96 76 Q110 98 122 122" stroke="#6a1848" stroke-width="11" stroke-linecap="round"/>
+                <defs>
+                    <linearGradient id="hr" x1="0" y1="0" x2="180" y2="0"><stop offset="0%" stop-color="#6a1848"/><stop offset="50%" stop-color="#a03060"/><stop offset="100%" stop-color="#6a1848"/></linearGradient>
+                    <linearGradient id="vr" x1="0" y1="0" x2="0" y2="130"><stop offset="0%" stop-color="#6a1848"/><stop offset="50%" stop-color="#a03060"/><stop offset="100%" stop-color="#6a1848"/></linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <div class="tap-hint" id="tapHint">✨ Tap here to open ✨</div>
+    </div>
+
+</div>
+
+<script>
+/* ══ SCATTERED PETALS ENGINE ══ */
+const PETALS = ['🌸','💮','🌺','🌹','✿'];
+for(let i=0; i<20; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = PETALS[Math.floor(Math.random()*PETALS.length)];
+    p.style.cssText = `left:${Math.random()*100}vw; font-size:${0.8+Math.random()*1.2}rem; animation-duration:${7+Math.random()*10}s; animation-delay:${-Math.random()*14}s;`;
+    document.body.appendChild(p);
+}
+
+/* ══ CORE CONTROL STATE MACHINE ══ */
+let STATE = 'closed'; 
+let typeTimer = null;
+let lineCounter = 0; 
+
+const stage = document.getElementById('stage');
+const envWrap = document.getElementById('envWrap');
+const envFlap = document.getElementById('envFlap');
+const envSeal = document.getElementById('envSeal');
+const ribbon = document.getElementById('ribbon');
+const tapHint = document.getElementById('tapHint');
+const paper = document.getElementById('letterPaper');
+const body = document.getElementById('letterBody');
+const sig = document.getElementById('letterSig');
+const closeHint = document.getElementById('closeHint');
+const envSticker = document.getElementById('envSticker');
+
+const LINES = [
+    { t:'Dear Ibran, ❤️' },
+    { t:'' },
+    { t:'From the very first moment,' },
+    { t:'there was something special about you.' },
+    { t:'' },
+    { t:'You became the reason behind' },
+    { t:'so many smiles, so many memories,' },
+    { t:'and so many beautiful moments.' },
+    { t:'' },
+    { t:'No matter how many pages life writes,' },
+    { t:'you will always be my favorite chapter.' },
+    { t:'' },
+    { t:'Thank you for being part of my journey,' },
+    { t:'First u became my frnd then my bestfrnd nd now u became a imp part of my lyf.'},
+    { t:'' },
+    { t:'Apart from that u r my teacher  who taught me without money.'},
+    { t:'U r the one who wants my success without any personal gain.'},
+    { t:'' },
+    { t:'U r the person with whom i can share everthing without any judgement.'},
+    { t:'and for giving my heart a place to belong.' },
+    { t:'' },
+    { t:'You are not just someone I love...' },
+    { t:'you are someone I cherish.' },
+];
+
+const LINE_H = 26; 
+const BASE_HEIGHT = 70; 
+
+function handleEnvelopeClick() {
+    if (STATE === 'closed') openLetterSequence();
+}
+
+function handleLetterClick(e) {
+    if (STATE === 'open') closeLetterSequence();
+}
+
+/* ══ MULTI-STAGE FORWARD UNBOXING ══ */
+function openLetterSequence() {
+    if (STATE !== 'closed') return;
+    STATE = 'opening';
+    
+    envWrap.classList.remove('floating-active');
+    envWrap.style.pointerEvents = 'none';
+
+    ribbon.classList.add('hide');
+    tapHint.classList.add('hide');
+    envSeal.style.opacity = '0';
+    stage.classList.add("interaction-stage-open");
+
+    setTimeout(() => { envFlap.classList.add('flap-open'); }, 600);
+
+    setTimeout(() => {
+        paper.style.height = BASE_HEIGHT + 'px';
+        paper.style.bottom = '120px'; 
+        paper.classList.add('rising');
+        
+        typeLinesWaterfall(0);
+    }, 1300);
+}
+
+/* ══ CASCADE SCROLL TYPEWRITER ENGINE ══ */
+function typeLinesWaterfall(li) {
+    if (li >= LINES.length) {
+        sig.style.opacity = '1';
+        setTimeout(() => {
+            closeHint.style.opacity = '1';
+            STATE = 'open'; 
+        }, 600);
+        return;
+    }
+
+    const { t } = LINES[li];
+    const span = document.createElement('span');
+    span.className = 'ln' + (t === '' ? ' gap' : '');
+    body.appendChild(span);
+
+    let targetHeight = BASE_HEIGHT + ((li + 1) * LINE_H);
+    if (targetHeight > 450) {
+        targetHeight = 450; 
+    }
+    let targetBottom = 120 + (li * 9);
+    if (targetBottom > 220) {
+        targetBottom = 220; 
+    }
+
+    paper.style.height = targetHeight + 'px';
+    paper.style.bottom = targetBottom + 'px';
+
+    if (t === '') {
+        lineCounter = li + 1; 
+        setTimeout(() => typeLinesWaterfall(li + 1), 100);
+        return;
+    }
+
+    let ci = 0;
+    span.classList.add('cursor-blink');
+
+    function nextChar() {
+        if (ci < t.length) {
+            span.textContent = t.slice(0, ci + 1);
+            const ch = t[ci];
+            ci++;
+            typeTimer = setTimeout(nextChar, ch === ',' || ch === '.' || ch === '…' ? 140 : 45);
+        } else {
+            span.classList.remove('cursor-blink');
+            lineCounter = li + 1; 
+            typeTimer = setTimeout(() => typeLinesWaterfall(li + 1), 200);
+        }
+    }
+    nextChar();
+}
+
+/* ══ REVERSE FOLD BACK MECHANICS ══ */
+function closeLetterSequence() {
+    if (STATE !== 'open') return;
+    STATE = 'closing';
+
+    clearTimeout(typeTimer);
+    sig.style.opacity = '0';
+    closeHint.style.opacity = '0';
+
+    paper.style.height = '60px';
+    paper.style.bottom = '55px';
+    paper.style.opacity = '0';
+
+    setTimeout(() => {
+        paper.classList.remove('rising');
+        envFlap.classList.remove('flap-open');
+    }, 600);
+
+    setTimeout(() => {
+        body.innerHTML = ''; 
+        ribbon.classList.remove('hide');
+        tapHint.classList.remove('hide');
+        envSeal.style.opacity = '1';
+        stage.classList.remove("interaction-stage-open");
+        
+        lineCounter = 0; 
+        envWrap.classList.add('floating-active');
+        envWrap.style.pointerEvents = 'auto'; 
+        STATE = 'closed'; 
+    }, 1300);
+}
+</script>
+</body>
+</html>

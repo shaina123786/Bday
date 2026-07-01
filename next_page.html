@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+/* Yahan par humne background color hata kar welcome.png image add kar di hai */
+background: url('welcome.png') no-repeat center center/cover;
+font-family:sans-serif;
+}
+
+canvas{
+position:absolute;
+inset:0;
+z-index:1;
+}
+
+.content{
+position:relative;
+z-index:10;
+text-align:center;
+}
+
+#welcome{
+font-size:7rem;
+font-weight:900;
+color:white;
+text-shadow:
+0 0 20px #fff,
+0 0 40px #ff9ac0,
+0 0 80px #ff4d6d;
+animation:pop 1s ease;
+}
+
+.count{
+display:none;
+font-size:10rem;
+font-weight:900;
+color:#FFD700;
+text-shadow:
+0 0 30px gold,
+0 0 60px gold;
+animation:zoom 1s ease;
+}
+
+@keyframes pop{
+from{
+opacity:0;
+transform:scale(.2);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+@keyframes zoom{
+0%{
+opacity:0;
+transform:scale(.2) rotateY(180deg);
+}
+50%{
+opacity:1;
+transform:scale(1.4);
+}
+100%{
+opacity:1;
+transform:scale(1);
+}
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<audio id="fireworkAudio" preload="auto">
+   <source src="mixkit-several-whistle-fireworks-pop-3105.mp3" type="audio/mpeg">
+</audio>
+
+<div class="content">
+<h1 id="welcome">WELCOME ✨</h1>
+<div id="count" class="count"></div>
+</div>
+
+<script>
+
+const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+let fireworkInterval;
+
+// AUTOMATIC ACTIVATION ON LOAD USING PRE-CLICKED FOCUS
+window.addEventListener("DOMContentLoaded", () => {
+    // Unsuspend audio channels instantly
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    
+    // Start fireworks and sound engine completely automatically
+    fireworkInterval = setInterval(firework, 600);
+    animate();
+    runTimelineSequence();
+});
+
+function speak(text){
+    let msg = new SpeechSynthesisUtterance(text);
+    msg.rate = 0.8;
+    msg.pitch = 1;
+    speechSynthesis.speak(msg);
+}
+
+function boomSound(){
+   const audio = document.getElementById("fireworkAudio");
+   if(audio){
+      audio.currentTime = 0;
+      audio.play().catch(err => {
+         console.log("Audio background trace:", err.message);
+      });
+   }
+}
+
+function tick(freq){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.frequency.value = freq;
+    gain.gain.value = .3;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + .5);
+    osc.stop(audioCtx.currentTime + .5);
+}
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let particles = [];
+
+class Particle{
+    constructor(x,y,color){
+        this.x = x;
+        this.y = y;
+        this.color = color;
+
+        let angle = Math.random() * Math.PI * 2;
+        let speed = Math.random() * 8 + 2;
+
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.life = 100;
+    }
+
+    draw(){
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
+    }
+
+    update(){
+        ctx.save();
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.05;
+        this.life--;
+    }
+}
+
+function firework(){
+    boomSound();
+
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height * .5;
+
+    const colors = ["#FFD700", "#FF758F", "#FF4D6D", "#FFFFFF"];
+
+    for(let i = 0; i < 70; i++){
+        particles.push(
+            new Particle(
+                x,
+                y,
+                colors[Math.floor(Math.random() * colors.length)]
+            )
+        );
+    }
+}
+
+function animate(){
+    // Background clear color ko halka transparent rakha hai taaki canvas ke peeche ki background image dikhti rahe
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles = particles.filter(p => p.life > 0);
+
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+function runTimelineSequence() {
+    setTimeout(() => {
+        document.getElementById("welcome").style.display = "none";
+        const count = document.getElementById("count");
+        count.style.display = "block";
+
+        let n = 3;
+
+        function start(){
+            if(n > 0){
+                count.innerHTML = n;
+                count.style.animation = "none";
+                void count.offsetWidth; 
+                count.style.animation = "zoom 1s ease";
+
+                speak(String(n));
+                tick(300 + n * 100);
+
+                n--;
+                setTimeout(start, 1000);
+            } else {
+                speak("Happy Birthday");
+                clearInterval(fireworkInterval); 
+
+                setTimeout(() => {
+                    window.location.href = "birthday_page.html";
+                }, 1500);
+            }
+        }
+        start();
+    }, 3000);
+}
+
+</script>
+</body>
+</html>

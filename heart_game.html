@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can You Recognize My Heart? ❤️</title>
+
+<link rel="stylesheet" href="heart.css">
+<style>
+    /* Hidden audio container to keep layout clean */
+    .audio-carrier {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="audio-carrier">
+    <audio id="gameMusic" loop preload="auto">
+        <source src="game_music.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+<div id="bgHearts"></div>
+
+<div class="screen active" id="startScreen">
+
+    <h1 class="main-title">
+        Can You Recognize My Heart? ❤️
+    </h1>
+
+    <button id="hintBtn" class="cute-btn">
+        💡 View Hint
+    </button>
+
+    <div id="hintBox" class="hint-box">
+
+        <p>
+        In sab hearts me se sirf ek heart mera hai... 💕
+
+        <br><br>
+
+        Mujhe lagta hai tum mujhe achhe se jaante ho 😌
+
+        <br><br>
+
+        Bas ek hi color ka heart catch karna hai.
+
+        <br><br>
+
+        Agar mera heart hua to surprise milega ❤️
+
+        <br><br>
+
+        Agar nahi hua...
+        to shayad tum mujhe pehchaan nahi paaye 🥺
+
+        <br> !! last imp chiz jo v heart phle choose kroge uska pic click ckrke meko bhejna h or cheating mt krna!!
+        </p>
+
+    </div>
+
+    <div class="sample-hearts">
+
+        <span>❤️</span>
+        <span>🩷</span>
+        <span>💙</span>
+
+    </div>
+
+    <button id="startBtn" class="start-btn">
+        ▶ Start Game
+    </button>
+
+</div>
+
+
+<div class="screen" id="gameScreen">
+
+    <div class="top-bar">
+
+        <div class="score-box">
+            Target: 6 Hearts ❤️
+        </div>
+
+        <div class="score-box">
+            Collected:
+            <span id="score">0</span>/6
+        </div>
+
+        <div class="score-box">
+            Chosen:
+            <span id="chosenHeart">?</span>
+        </div>
+
+    </div>
+
+    <div id="gameArea">
+
+    </div>
+
+    <div id="basket">
+        🧺
+    </div>
+
+</div>
+
+
+<div class="screen" id="oopsScreen">
+
+    <img
+    class="result-gif"
+    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWJ3OTg1N2Q1eDN5bWt6eTlwZDh0NDNvd3hxejd3dTR1dHZzbTMwaSZlcD12MV9naWZsX3NlYXJjaCZjdD1n/wDv7BR1Umi8HGDTG45/giphy.gif">
+
+    <h2>
+        Oops! 😭💔
+    </h2>
+
+    <p>
+        Aapne 2 alag hearts catch kar liye...
+
+        <br><br>
+
+        Maine to kaha tha sirf ek hi heart mera hai baby ❤️
+    </p>
+
+    <button class="retry-btn">
+        🔄 Try Again
+    </button>
+
+</div>
+
+
+<div class="screen" id="wrongHeartScreen">
+
+    <img
+    class="result-gif"
+    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2VrdjU3cDVsNTVvemJkeG13emw2enNreGpmNmhxeXR6b3EwMTR2ZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/W4RizlO6qZWQRYw9mb/giphy.gif">
+
+    <h2>
+        Aww 🥺💔
+    </h2>
+
+    <p>
+        Tumne glt heart choose kiya...
+
+        <br><br>
+
+        Par wo mera nahi tha ❤️
+    </p>
+
+    <button class="retry-btn">
+        🔄 Try Again
+    </button>
+
+</div>
+
+
+<div class="screen" id="winScreen">
+    <div id="confettiContainer"></div>
+
+    <div id="nameReveal">
+
+    </div>
+
+    <img
+    class="result-gif"
+    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajlhZXgycTI2YjJ2OG9hcGtwd2cxamRnMWlqMWN6dzRnd254aXk3MyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Nb8yxAsyFeV2dOVgAd/giphy.gif">
+
+    <h2>
+        You Found My Heart ❤️
+    </h2>
+
+    <p>
+        Looks Like You Know Me Better Than Anyone 💕
+
+    </p>
+    <button id="surpriseBtn" class="surprise-btn">
+       🎁 Surprise →
+    </button>
+
+</div>
+
+<script src="heart.js"></script>
+
+<script>
+    // --- Safe Music Trigger Script Matrix ---
+    const audioTrack = document.getElementById("gameMusic");
+    
+    function startLoopingMusic() {
+        if (audioTrack) {
+            audioTrack.volume = 0.6; // Soft clear volume
+            audioTrack.play().then(() => {
+                // Remove triggers once the browser context is unlocked successfully
+                window.removeEventListener("click", startLoopingMusic);
+                window.removeEventListener("touchstart", startLoopingMusic);
+            }).catch(err => console.log("Audio waiting for user context handshake..."));
+        }
+    }
+
+    // Attach to start screen action buttons for immediate play response
+    document.getElementById("startBtn").addEventListener("click", startLoopingMusic);
+    document.getElementById("hintBtn").addEventListener("click", startLoopingMusic);
+    
+    // Fallback backup if they click anywhere else on the page layer
+    window.addEventListener("click", startLoopingMusic);
+    window.addEventListener("touchstart", startLoopingMusic);
+
+    // --- Stop Music Logic Integration ---
+    // If you want to stop the music precisely when the win screen or wrong screen loads:
+    function checkAndStopMusicOnEnd() {
+        // Observers to check if game screen transitions to win/lose layers
+        const endScreens = [
+            document.getElementById("oopsScreen"),
+            document.getElementById("wrongHeartScreen"),
+            document.getElementById("winScreen")
+        ];
+        
+        setInterval(() => {
+            endScreens.forEach(screen => {
+                if (screen && screen.classList.contains("active")) {
+                    if (audioTrack && !audioTrack.paused) {
+                        audioTrack.pause(); // Stops background music track cleanly
+                    }
+                }
+            });
+        }, 300);
+    }
+    window.addEventListener("DOMContentLoaded", checkAndStopMusicOnEnd);
+</script>
+
+</body>
+</html>

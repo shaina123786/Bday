@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cut The Cake, Ibran! 🎂</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        user-select: none;
+      }
+
+      body {
+        background-color: #2b0b1e;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        perspective: 1200px;
+      }
+
+      /* Ambient Sparkles Background Layer */
+      .celebration-bg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Floating Interactive Instructions Header */
+      .instruction-header {
+        position: absolute;
+        top: 50px;
+        text-align: center;
+        z-index: 10;
+        color: #ffffff;
+        font-size: 2.5rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow:
+          0 0 15px #fff,
+          0 0 30px #ff758f,
+          0 0 60px #ff4d6d;
+        animation: pulseGlow 2s infinite alternate;
+      }
+
+      @keyframes pulseGlow {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.05);
+        }
+      }
+
+      /* --- Master Container --- */
+      .stage-area {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+      }
+
+      /* --- Cake Container with Falling Gravity --- */
+      .cake-box {
+        position: absolute;
+        bottom: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: translateY(-150vh);
+        animation: dropCake 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        z-index: 6;
+      }
+
+      @keyframes dropCake {
+        0% {
+          transform: translateY(-150vh);
+        }
+        70% {
+          transform: translateY(30px);
+        }
+        85% {
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* --- CSS 3D Cake --- */
+      .animated-cake {
+        width: 360px; 
+        height: 240px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Giant Base Plate */
+      .cake-plate {
+        width: 420px;
+        height: 25px;
+        background: radial-gradient(circle, #f0f0f0, #c0c0c0);
+        border-radius: 50%;
+        position: absolute;
+        bottom: -15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        z-index: 1;
+        transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      /* --- Cake Sides Left/Right Split Mechanics --- */
+      .cake-half {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        top: 0;
+        overflow: visible;
+        transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 3;
+      }
+
+      .left-side {
+        left: 0;
+        transform-origin: left center;
+      }
+
+      .right-side {
+        right: 0;
+        transform-origin: right center;
+      }
+
+      /* Visualizing Cake Separation after Cut */
+      .animated-cake.is-cut .left-side {
+        transform: translateX(-35px) rotate(-5deg);
+      }
+
+      .animated-cake.is-cut .right-side {
+        transform: translateX(35px) rotate(5deg);
+      }
+
+      /* Cake Tier Design inside Halves */
+      .tier-bottom {
+        position: absolute;
+        width: 180px; 
+        height: 110px;
+        background: #ff758f;
+        bottom: 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .left-side .tier-bottom {
+        border-radius: 30px 0 0 15px;
+        left: 0;
+        box-shadow: inset 10px 10px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .right-side .tier-bottom {
+        border-radius: 0 30px 15px 0;
+        right: 0;
+        box-shadow: inset -10px 10px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      /* Cream Drips */
+      .tier-bottom::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 35px;
+        background: #702353; 
+      }
+      .left-side .tier-bottom::before {
+        border-radius: 20px 0 0 20px;
+      }
+      .right-side .tier-bottom::before {
+        border-radius: 0 20px 20px 0;
+      }
+
+      /* Top Tier Layer */
+      .tier-top {
+        position: absolute;
+        width: 130px; 
+        height: 90px;
+        background: #ffccd5;
+        bottom: 105px;
+        z-index: 4;
+      }
+
+      .left-side .tier-top {
+        border-radius: 25px 0 0 10px;
+        right: 0; 
+        box-shadow: inset 8px 8px 0 rgba(255, 255, 255, 0.4);
+      }
+
+      .right-side .tier-top {
+        border-radius: 0 25px 10px 0;
+        left: 0;
+        box-shadow: inset -8px 8px 0 rgba(255, 255, 255, 0.4);
+      }
+
+      .tier-top::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 25px;
+        background: #ff4d6d;
+      }
+      .left-side .tier-top::before {
+        border-radius: 15px 0 0 15px;
+      }
+      .right-side .tier-top::before {
+        border-radius: 0 15px 15px 0;
+      }
+
+      /* Inner Cream Filling Texture */
+      .inner-filling {
+        position: absolute;
+        width: 30px;
+        height: 195px;
+        background: #fff;
+        top: 45px;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.3s;
+        box-shadow: inset 0 0 10px rgba(112, 35, 83, 0.3);
+      }
+      .left-side .inner-filling {
+        right: -15px;
+        border-radius: 5px 0 0 5px;
+      }
+      .right-side .inner-filling {
+        left: -15px;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .animated-cake.is-cut .inner-filling {
+        opacity: 1;
+      }
+
+      /* --- Candle & Flame Matrix --- */
+      .candle-stick {
+        position: absolute;
+        width: 12px;
+        height: 55px;
+        background: linear-gradient(to top, #ffd700, #fff, #ffd700);
+        bottom: 230px;
+        left: calc(50% - 6px);
+        border-radius: 6px;
+        z-index: 10;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        transition: transform 0.6s;
+      }
+
+      .candle-flame {
+        position: absolute;
+        width: 18px;
+        height: 28px;
+        background: radial-gradient(circle, #ffd700 20%, #ff4d6d 100%);
+        border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+        bottom: 283px;
+        left: calc(50% - 9px);
+        z-index: 11;
+        animation: flicker 0.6s infinite alternate;
+      }
+
+      /* --- Fixed Positioning for GIFs --- */
+      #girlGif {
+        position: absolute;
+        left: -240px; /* Aligned perfectly to the left of the stage layout */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 320px; 
+        opacity: 0;
+        z-index: 99;
+        transition: 1s ease-in-out;
+      }
+
+      #boyGif {
+        position: absolute;
+        right: -240px; /* Aligned perfectly to the right of the stage layout */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 320px; 
+        opacity: 0;
+        height: 300px;
+        z-index: 99;
+        transition: 1s ease-in-out;
+      }
+
+      .showGif {
+        opacity: 1 !important;
+      }
+
+      @keyframes flicker {
+        0% {
+          transform: scale(1) rotate(-2deg);
+          filter: drop-shadow(0 0 10px #ffd700);
+        }
+        100% {
+          transform: scale(1.15) rotate(3deg);
+          filter: drop-shadow(0 0 25px #ff4d6d);
+        }
+      }
+
+      /* --- Your Floating Custom Text GIF Layout --- */
+      .text-gif-overlay {
+        position: absolute;
+        width: 260px;
+        height: auto;
+        top: -100px;
+        opacity: 0;
+        transform: scale(0.5);
+        animation: popGif 0.8s 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+          forwards;
+        z-index: 12;
+        pointer-events: none;
+      }
+
+      @keyframes popGif {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* --- Knife Component Style Setup --- */
+      .interactive-knife {
+        position: absolute;
+        width: 140px;
+        height: 40px;
+        left: 580px; 
+        top: 280px;
+        cursor: grab;
+        z-index: 100;
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+        transform: rotate(-15deg);
+        transform-origin: center center;
+      }
+
+      .knife-blade {
+        position: absolute;
+        width: 90px;
+        height: 24px;
+        background: linear-gradient(to bottom, #f0f0f0, #9e9e9e);
+        border-radius: 0 100% 0 0;
+        border-top: 2px solid #fff;
+        right: 0;
+      }
+      .animated-cake.is-cut {
+        filter: drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 50px #ff758f);
+      }
+      .knife-handle {
+        position: absolute;
+        width: 50px;
+        height: 18px;
+        background: linear-gradient(#55143e, #310722);
+        left: 0;
+        top: 3px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 117, 143, 0.3);
+      }
+
+      .knife-handle::after {
+        content: "🎀";
+        position: absolute;
+        font-size: 12px;
+        right: -5px;
+        top: -5px;
+      }
+
+      /* Styling for the love bear GIF that follows cursor */
+      #loveBearGif {
+        position: absolute;
+        width: 150px; /* Adjust size as needed */
+        height: auto;
+        opacity: 0;
+        z-index: 100;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none; /* Let clicks pass through */
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="cutSound" loop>
+      <source src="Ibrah.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="celebration-bg" id="sparkleLayer"></div>
+
+    <h2 class="instruction-header" id="headerText">
+      Drag Knife to Cut Cake 🔪
+    </h2>
+
+    <div class="stage-area" id="stageArea">
+      <div class="cake-box" id="cakeBoxFrame">
+        <img
+          class="text-gif-overlay"
+          src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyYTJibzVwc2k0bDhlNzJjdG9hNjZ4cXRrODJobzJsNzZ1OGFoZ2I4cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dHM/4AxmzryLm3VwADH0k3/giphy.gif"
+          alt="Cut Text Animation"
+        />
+
+        <div class="candle-stick" id="candle"></div>
+        <div class="candle-flame" id="flame"></div>
+
+        <div class="animated-cake" id="cakeTarget">
+          <div class="cake-half left-side">
+            <div class="tier-top"></div>
+            <div class="tier-bottom"></div>
+            <div class="inner-filling"></div>
+          </div>
+
+          <div class="cake-half right-side">
+            <div class="tier-top"></div>
+            <div class="tier-bottom"></div>
+            <div class="inner-filling"></div>
+          </div>
+
+          <div class="cake-plate"></div>
+        </div>
+      </div>
+        
+      <img
+        id="girlGif"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWEwaXlxd2s0bWM3aXdtODlscjlkbmhta3dwYnhsZjU2NjJqb3JlcCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/kf3EjrAsKp3P9bhYHG/giphy.gif"
+      />
+
+      <img
+        id="boyGif"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWxlb2JmZnMwYjc0aGFpZXAzbTU2NTJwbG81NXAzMGU5Z3huNnlvNiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/jWXB1hUSI9391Ze2U1/giphy.gif"
+      />
+
+      <div class="interactive-knife" id="knife" draggable="false">
+        <div class="knife-handle"></div>
+        <div class="knife-blade"></div>
+      </div>
+
+      <!-- Love bear GIF element that follows cursor -->
+      <img id="loveBearGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3NqdnJpMDRqNmVvYXVhOHB6YmltYW4ybTVueHVlZjhqMnJ4N3dneSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/MhYGO6XdrbUb19Ld1q/giphy.gif" alt="Love Happy Bear">
+    </div>
+
+    <script>
+      // --- 1. Delayed Background Audio Setup ---
+      const audioTrack = document.getElementById("cutSound");
+
+      function startDelayedAudio() {
+        setTimeout(() => {
+          if (audioTrack) {
+            audioTrack.volume = 0.8;
+            audioTrack.currentTime = 0; 
+            audioTrack.play().catch((err) => console.log("Autoplay context restricted. Waiting for cut event..."));
+          }
+        }, 2000); 
+      }
+
+      // --- 2. Ambient Celebration Confetti Sparkles Particle Loop ---
+      function initCelebrationParticles() {
+        const container = document.getElementById("sparkleLayer");
+        const shapes = ["✨", "🎉", "💖", "⭐", "🎈"];
+        const colors = ["#FF758F", "#FF4D6D", "#FFD700", "#FFFFFF", "#00F5D4"];
+
+        setInterval(() => {
+          const particle = document.createElement("div");
+          particle.style.position = "absolute";
+          particle.style.left = Math.random() * 100 + "vw";
+          particle.style.top = "-20px";
+          particle.style.fontSize = Math.random() * 25 + 20 + "px";
+          particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+          particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
+          particle.style.pointerEvents = "none";
+
+          const duration = Math.random() * 4 + 4;
+          particle.style.transition = `transform ${duration}s linear, opacity ${duration}s`;
+          container.appendChild(particle);
+
+          setTimeout(() => {
+            particle.style.transform = `translateY(105vh) translateX(${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg)`;
+            particle.style.opacity = "0";
+          }, 50);
+
+          setTimeout(() => particle.remove(), duration * 1000);
+        }, 100);
+      }
+
+      // --- 3. Optimized Precision Knife Drag Engine Fix ---
+      const knife = document.getElementById("knife");
+      const cakeTarget = document.getElementById("cakeTarget");
+      const candle = document.getElementById("candle");
+      const flame = document.getElementById("flame");
+      const headerText = document.getElementById("headerText");
+      const stageArea = document.getElementById("stageArea");
+      const loveBearGif = document.getElementById("loveBearGif");
+
+      let isDragging = false;
+      let loveBearVisible = false;
+
+      // Handle showing/hiding bear based on hover
+      knife.addEventListener("mouseenter", () => {
+          if (!sliceComplete) {
+              loveBearGif.style.opacity = "1";
+              loveBearVisible = true;
+          }
+      });
+      knife.addEventListener("mouseleave", () => {
+          if (!isDragging) {
+              loveBearGif.style.opacity = "0";
+              loveBearVisible = false;
+          }
+      });
+
+      knife.addEventListener("mousedown", startDrag);
+      window.addEventListener("mousemove", dragMove);
+      window.addEventListener("mouseup", stopDrag);
+
+      knife.addEventListener("touchstart", startDrag, { passive: false });
+      window.addEventListener("touchmove", dragMove, { passive: false });
+      window.addEventListener("touchend", stopDrag);
+
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+        knife.style.cursor = "grabbing";
+        
+        // Ensure bear is visible when dragging starts
+        loveBearGif.style.opacity = "1";
+        loveBearVisible = true;
+        
+        // Autoplay unlock fallback gesture handshake
+        if(audioTrack && audioTrack.paused) {
+          audioTrack.play().catch(() => {});
+        }
+      }
+
+      function dragMove(e) {
+        if (!isDragging || sliceComplete) {
+            if (!sliceComplete && !isDragging) {
+                loveBearGif.style.opacity = "0";
+                loveBearVisible = false;
+            }
+            return;
+        }
+        e.preventDefault();
+
+        // Parse global page positions
+        const pageX = e.touches ? e.touches[0].pageX : e.pageX;
+        const pageY = e.touches ? e.touches[0].pageY : e.pageY;
+
+        // Calculate positioning relative to the centered stage container box bounds rules
+        const stageRect = stageArea.getBoundingClientRect();
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        const relativeX = pageX - (stageRect.left + scrollX);
+        const relativeY = pageY - (stageRect.top + scrollY);
+
+        // Center knife accurately under cursor finger offset
+        knife.style.left = (relativeX - 45) + "px";
+        knife.style.top = (relativeY - 15) + "px";
+
+        // Update the love bear gif's position to follow the cursor, slightly offset
+        if (loveBearVisible) {
+          loveBearGif.style.left = (relativeX + 20) + "px"; // Offset to the right of the cursor
+          loveBearGif.style.top = (relativeY - 70) + "px"; // Offset above the cursor
+        }
+
+        // Real-time bounding collision detection rules handler
+        const knifeRect = knife.getBoundingClientRect();
+        const cakeRect = cakeTarget.getBoundingClientRect();
+
+        if (
+          knifeRect.left < cakeRect.right &&
+          knifeRect.right > cakeRect.left &&
+          knifeRect.top < cakeRect.bottom &&
+          knifeRect.bottom > cakeRect.top
+        ) {
+          triggerCakeCutAnimation();
+        }
+      }
+
+      function stopDrag() {
+        isDragging = false;
+        knife.style.cursor = "grab";
+        
+        // Bear visibility logic on drag end
+        if (!sliceComplete) {
+            // If mouse is still over knife, keep bear, otherwise hide
+            const knifeRect = knife.getBoundingClientRect();
+            // This is a simple approximation; full mouse tracking is cleaner but this works here.
+        }
+      }
+
+      // --- 4. Dynamic Interactive Cut Separation Sequence ---
+      let sliceComplete = false;
+      function triggerCakeCutAnimation() {
+        if (sliceComplete) return;
+        sliceComplete = true;
+
+        knife.style.display = "none"; // Hide knife tool instantly on cut match
+        loveBearGif.style.display = "none"; // Hide love bear gif instantly on cut match
+
+        cakeTarget.animate(
+          [
+            { transform: "scale(1)" },
+            { transform: "scale(1.08)" },
+            { transform: "scale(1)" },
+          ],
+          { duration: 800 }
+        );
+
+        // Activate Slicing Slices animation
+        cakeTarget.classList.add("is-cut");
+        
+        confettiBurst();
+        flame.animate(
+          [
+            { opacity: 1, transform: "scale(1)" },
+            { opacity: 0.5, transform: "scale(.5)" },
+            { opacity: 0, transform: "scale(0)" },
+          ],
+          { duration: 500 }
+        );
+
+        setTimeout(() => {
+          flame.style.display = "none";
+        }, 500);
+
+        candle.style.transform = "rotate(-10deg) translateX(-10px)";
+        headerText.innerHTML = "❤️ Another Beautiful Memory Created Today ❤️";
+        headerText.style.color = "#FFD700";
+
+        // Display the left and right side GIFs smoothly after cutting
+        setTimeout(() => {
+          document.getElementById("girlGif").classList.add("showGif");
+          document.getElementById("boyGif").classList.add("showGif");
+        }, 800);
+
+        // --- FIXED 10 SECOND REDIRECT TIMELINE ROUTINE ---
+        setTimeout(() => {
+          window.location.href = "cake2.html";
+        }, 19000); // 10,000 milliseconds = Exactly 10 Seconds
+      }
+
+      function confettiBurst() {
+        for (let i = 0; i < 150; i++) {
+          const confetti = document.createElement("div");
+          confetti.innerHTML = ["🎉", "✨", "🎊", "💖", "⭐"][Math.floor(Math.random() * 5)];
+          confetti.style.position = "fixed";
+          confetti.style.left = "50%";
+          confetti.style.top = "50%";
+          confetti.style.fontSize = 15 + Math.random() * 25 + "px";
+          confetti.style.zIndex = "9999";
+          document.body.appendChild(confetti);
+
+          const x = (Math.random() - 0.5) * 1200;
+          const y = (Math.random() - 0.5) * 900;
+
+          confetti.animate(
+            [
+              { transform: "translate(0,0)", opacity: 1 },
+              { transform: `translate(${x}px,${y}px)`, opacity: 0 },
+            ],
+            { duration: 2500 }
+          );
+
+          setTimeout(() => { confetti.remove(); }, 2500);
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        initCelebrationParticles();
+        startDelayedAudio();
+      });
+    </script>
+  </body>
+</html>

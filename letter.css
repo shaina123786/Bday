@@ -1,0 +1,431 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+width:100%;
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+linear-gradient(
+135deg,
+#fff0f6,
+#ffd6e7,
+#ffc2d1,
+#ffe5ec
+);
+
+font-family:'Poppins',sans-serif;
+position:relative;
+}
+
+/* ---------------- */
+/* BIG GIF */
+/* ---------------- */
+
+#loveGif{
+
+position:absolute;
+
+top:20px;
+right:30px;
+
+width:220px;
+
+z-index:100;
+
+animation:floatGif 3s ease-in-out infinite;
+}
+
+@keyframes floatGif{
+
+0%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-15px);
+}
+
+100%{
+transform:translateY(0);
+}
+}
+
+/* ---------------- */
+/* Envelope Area */
+/* ---------------- */
+
+.envelope-wrapper{
+
+position:relative;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+z-index:20;
+}
+
+#tapText{
+
+margin-top:25px;
+
+font-size:24px;
+
+font-weight:600;
+
+color:#c2185b;
+
+animation:pulseText 1.5s infinite;
+}
+
+@keyframes pulseText{
+
+50%{
+transform:scale(1.08);
+}
+}
+
+/* ---------------- */
+/* Envelope */
+/* ---------------- */
+
+#envelope{
+
+position:relative;
+
+width:420px;
+height:280px;
+
+background:
+linear-gradient(
+145deg,
+#ffd6e7,
+#ffb3c6
+);
+
+border-radius:12px;
+
+box-shadow:
+0 20px 40px rgba(0,0,0,.15);
+
+overflow:visible;
+}
+
+/* Envelope flap */
+
+.flap{
+
+position:absolute;
+
+top:0;
+left:0;
+
+width:100%;
+height:160px;
+
+background:
+linear-gradient(
+145deg,
+#ffc2d1,
+#ff9eb5
+);
+
+clip-path:
+polygon(
+0 0,
+100% 0,
+50% 100%
+);
+
+transform-origin:top;
+
+transition:1s;
+
+z-index:6;
+}
+
+/* ---------------- */
+/* Ribbon */
+/* ---------------- */
+
+#ribbon{
+
+position:absolute;
+
+top:110px;
+left:50%;
+
+transform:
+translateX(-50%);
+
+padding:12px 40px;
+
+border-radius:40px;
+
+background:
+linear-gradient(
+45deg,
+#d4af37,
+#ffd700,
+#f7d56b
+);
+
+color:white;
+
+font-size:24px;
+
+font-weight:700;
+
+cursor:pointer;
+
+z-index:10;
+
+box-shadow:
+0 0 20px rgba(255,215,0,.6);
+
+animation:ribbonGlow 2s infinite;
+}
+
+@keyframes ribbonGlow{
+
+0%{
+box-shadow:
+0 0 10px gold;
+}
+
+50%{
+box-shadow:
+0 0 30px gold;
+}
+
+100%{
+box-shadow:
+0 0 10px gold;
+}
+}
+
+/* ---------------- */
+/* Letter */
+/* ---------------- */
+
+#letter{
+
+position:absolute;
+
+left:50%;
+bottom:15px;
+
+transform:
+translateX(-50%);
+
+width:360px;
+height:120px;
+
+background:
+linear-gradient(
+180deg,
+#fffdf7,
+#fff6ee
+);
+
+border-radius:10px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.12);
+
+overflow:hidden;
+
+z-index:4;
+
+transition:
+height .3s linear;
+}
+
+/* Content */
+
+.letter-content{
+
+padding:30px;
+}
+
+.dear{
+
+font-family:
+'Great Vibes',
+cursive;
+
+font-size:42px;
+
+color:#c2185b;
+
+margin-bottom:15px;
+
+text-shadow:
+0 0 12px rgba(255,105,180,.5);
+}
+
+/* Typewriter */
+
+#typewriterText{
+
+font-size:20px;
+
+line-height:1.9;
+
+color:#b0005b;
+
+font-weight:500;
+
+text-shadow:
+0 0 8px rgba(255,182,193,.7);
+
+white-space:pre-wrap;
+}
+
+/* Every typed letter glow */
+
+.glow{
+
+animation:glowLetter .5s ease;
+}
+
+@keyframes glowLetter{
+
+0%{
+opacity:0;
+}
+
+100%{
+opacity:1;
+}
+}
+
+/* ---------------- */
+/* Open States */
+/* ---------------- */
+
+#envelope.open .flap{
+
+transform:
+rotateX(180deg);
+}
+
+#envelope.open #ribbon{
+
+opacity:0;
+
+pointer-events:none;
+}
+
+/* ---------------- */
+/* Petals */
+/* ---------------- */
+
+.petal{
+
+position:absolute;
+
+font-size:24px;
+
+pointer-events:none;
+
+animation:
+fallPetal linear forwards;
+}
+
+@keyframes fallPetal{
+
+0%{
+
+transform:
+translateY(-100px)
+rotate(0deg);
+
+opacity:1;
+}
+
+100%{
+
+transform:
+translateY(110vh)
+rotate(360deg);
+
+opacity:0;
+}
+}
+
+/* ---------------- */
+/* Sparkles */
+/* ---------------- */
+
+.sparkle{
+
+position:absolute;
+
+color:#fff;
+
+font-size:14px;
+
+pointer-events:none;
+
+animation:
+sparkleAnim 3s linear forwards;
+}
+
+@keyframes sparkleAnim{
+
+0%{
+opacity:0;
+transform:scale(.2);
+}
+
+50%{
+opacity:1;
+}
+
+100%{
+opacity:0;
+transform:scale(1.5);
+}
+}
+
+/* ---------------- */
+/* Responsive */
+/* ---------------- */
+
+@media(max-width:768px){
+
+#envelope{
+
+width:340px;
+height:240px;
+}
+
+#letter{
+
+width:290px;
+}
+
+#loveGif{
+
+width:150px;
+}
+
+.dear{
+
+font-size:34px;
+}
+
+#typewriterText{
+
+font-size:17px;
+}
+}

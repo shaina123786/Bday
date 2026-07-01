@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Secret Access</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="petals-container" id="petalsContainer"></div>
+
+    <div class="card" id="card">
+        <div id="stage1" class="stage active">
+            <div class="lock-icon">🔒</div>
+            <h2 class="title-text">Enter Secret Code</h2>
+            <p class="sub-text">Enter Passcode</p>
+            
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="• • • •" maxlength="4">
+            </div>
+            
+            <button class="action-btn" onclick="checkPassword()">ENTER</button>
+            <p class="footer-text">Shhh... it's a Secret 💖</p>
+        </div>
+
+        <div id="stage2" class="stage">
+            <div class="cross-icon">❌</div>
+            <h2 class="wrong-title">Oops! Wrong Secret Code</h2>
+            <p class="sub-text-wrong">Try Again My Prince💖</p>
+            
+            <div class="gif-container">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThnN3p1cm44ZTNqeTQ4Zm8wcno0d3A4cHQ5NDFkeWdxM3gweTkwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hPPx8yk3Bmqys/giphy.gif" alt="Wrong Status 1" class="status-gif">
+            </div>
+            
+            <div class="hints-wrapper">
+                <button class="hint-trigger" onclick="toggleHint(1)">💡 View Hint 1</button>
+                <div id="hint1" class="hint-content">0 se strt h</div>
+            </div>
+
+            <button class="try-again-btn" onclick="goBackToTry()">TRY AGAIN</button>
+        </div>
+
+        <div id="stage3" class="stage">
+            <div class="cross-icon">🤭</div>
+            <h2 class="wrong-title">Wrong Again! 🤭</h2>
+            <p class="sub-text-wrong">Thoda dimag lagao baby...</p>
+            
+            <div class="gif-container">
+                <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGtidDdqNjR2dWFjNDE1ZjN4bjlpdTJvcWFsbTdnbWJyMGxpb2dzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yifTRs3TidIju/giphy.gif" alt="Wrong Status 2" class="status-gif">
+            </div>
+            
+            <div class="hints-wrapper">
+                <button class="hint-trigger" onclick="toggleHint(2)">💡 View Hint 2</button>
+                <div id="hint2" class="hint-content">🔐 Password us din me chhupa hai jab duniya thodi aur khoobsurat ho gayi thi...</div>
+            </div>
+
+            <button class="try-again-btn" onclick="goBackToTry()">TRY AGAIN</button>
+        </div>
+
+        <div id="stage5" class="stage">
+            <div class="cross-icon">🥺</div>
+            <h2 class="wrong-title" style="font-size: 21px;">Ye ummed nhi thi baby aapse 🥺💔</h2>
+            <p class="sub-text-wrong" style="margin-bottom: 15px;">Chlo koi baat nhi mai hoon bht achi lst hint de rhi ab</p>
+            
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXlwMG9zM204Njd3cXc0bDM0aTl6NHpkd25sem1pdDRxMDA3a3JhZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l1J9u3TZfpmeDLkD6/giphy.gif" alt="Sad Disappointed" class="status-gif">
+            </div>
+            
+            <div class="hints-wrapper">
+                <button class="hint-trigger" onclick="toggleHint(3)">💡 View Hint 3</button>
+                <div id="hint3" class="hint-content">😏 Itna bhi kya bhoolna... jis din mujhe wish karte ho, wahi jawab hai...</div>
+            </div>
+
+            <button class="try-again-btn" onclick="goBackToTry()">TRY AGAIN</button>
+        </div>
+
+        <div id="stage4" class="stage">
+            <div class="celebrate-stars">✨🎉✨</div>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3lvZGY0Zm42azR1aHgyNm14bmh3MDdqdmk0MnNrc3BrNXJ3eGdxbCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nNfRs2Unc5VxI3VnQB/giphy.gif" alt="Success Celebration" class="status-gif success-gif">
+            </div>
+            <h2 class="success-title">Yay baby, u crack it successfully! 💖🥳</h2>
+            <br>
+            <!-- <button class="next-btn" onclick="location.href='next_page.html'">NEXT ➔</button> -->
+             <button class="next-btn" onclick="startTransition()">NEXT ➔</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
