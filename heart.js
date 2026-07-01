@@ -438,7 +438,7 @@ if(surpriseBtn){
  ()=>{
 
    location.href =
-   "next_page.html";
+   "surprise.html";
 
  });
 
