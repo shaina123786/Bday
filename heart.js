@@ -27,7 +27,7 @@ let gameStarted = false;
 
 let spawnInterval;
 
-const targetScore = 6;
+const targetScore = 3;
 
 /* -------------------------- */
 /* Floating Background Hearts */
